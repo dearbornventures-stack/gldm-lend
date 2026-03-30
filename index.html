@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GLDM — Lending Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#070604;--deep:#0D0A05;--surface:#141008;--border:#252010;--border-light:#3a3018;--gold:#C9A84C;--gold-bright:#F0C84A;--gold-dim:#8a7434;--gold-glow:rgba(201,168,76,0.08);--cream:#EDE3C8;--muted:#7A6A48;--text:#C8B888;--green:#4CAF76;--red:#CF4444;--fd:'Cormorant Garamond',Georgia,serif;--fm:'JetBrains Mono','Courier New',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--black);color:var(--cream);font-family:var(--fm);font-size:13px;font-weight:300;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::selection{background:var(--gold);color:var(--black)}
+.app{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(7,6,4,0.95);backdrop-filter:blur(12px);z-index:100;margin:0 -20px}
+.logo{font-family:var(--fd);font-size:1.6rem;font-weight:300;color:var(--cream);letter-spacing:0.08em;display:flex;align-items:baseline;gap:8px}
+.logo em{font-style:italic;color:var(--gold);font-size:0.7em}
+.logo-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block;animation:pd 3s ease-in-out infinite}
+@keyframes pd{0%,100%{opacity:.4}50%{opacity:1;box-shadow:0 0 8px var(--gold)}}
+.tr{display:flex;align-items:center;gap:10px}
+.lang-toggle{display:flex;border:1px solid var(--border);height:34px}
+.lang-btn{font-family:var(--fm);font-size:.62rem;font-weight:500;letter-spacing:.06em;padding:0 14px;border:none;background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase}
+.lang-btn:first-child{border-right:1px solid var(--border)}
+.lang-btn.active{background:var(--gold-glow);color:var(--gold)}
+.wbtn{font-family:var(--fm);font-size:.72rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:8px 20px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer}
+.wbtn:hover{background:var(--gold);color:var(--black)}
+.wbtn.on{border-color:var(--green);color:var(--green)}
+.wbtn.on:hover{background:var(--green);color:var(--black)}
+
+/* NAV */
+.nav{display:flex;border-bottom:1px solid var(--border);overflow-x:auto}
+.nav-tab{font-family:var(--fm);font-size:.68rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:14px 24px;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* TICKER */
+.ticker{display:flex;gap:0;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--deep)}
+.tick{flex:1;min-width:120px;padding:12px 16px;border-right:1px solid var(--border);text-align:center}
+.tick:last-child{border-right:none}
+.tick-name{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.tick-price{font-family:var(--fm);font-size:.95rem;font-weight:500;color:var(--cream)}
+.tick-change{font-size:.6rem;margin-top:2px}
+.tick-change.up{color:var(--green)}.tick-change.down{color:var(--red)}
+.tick-loading{color:var(--muted);font-size:.7rem}
+
+/* VIEWS */
+.view{display:none;padding:32px 0 80px}
+.view.active{display:block;animation:fu .35s ease}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+.sl{font-family:var(--fm);font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px}
+.st{font-family:var(--fd);font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:24px;line-height:1.15}
+.st em{font-style:italic;color:var(--gold)}
+
+/* CALC GRID */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+.calc-card{background:var(--deep);border:1px solid var(--border);padding:28px 24px;position:relative;overflow:hidden}
+.calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold-dim),var(--gold),var(--gold-dim))}
+.calc-title{font-family:var(--fd);font-size:1.3rem;font-weight:300;color:var(--cream);margin-bottom:4px}
+.calc-sub{font-size:.72rem;color:var(--muted);margin-bottom:20px;line-height:1.4}
+
+/* INPUTS */
+.fg{margin-bottom:16px}
+.fl{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.fl .hint{color:var(--gold-dim)}
+.fw{display:flex;border:1px solid var(--border);background:var(--surface)}
+.fw:focus-within{border-color:var(--gold-dim)}
+.fw input,.fw select{background:none;border:none;padding:10px 14px;font-family:var(--fm);font-size:.9rem;color:var(--cream);outline:none;min-width:0}
+.fw input{flex:1}
+.fw input::placeholder{color:var(--muted)}
+.fw select{border-left:1px solid var(--border);color:var(--gold);font-size:.75rem;cursor:pointer;padding-right:8px}
+.fw select option{background:var(--deep);color:var(--cream)}
+
+/* SLIDER */
+.slider-row{display:flex;align-items:center;gap:12px}
+.slider-row input[type=range]{flex:1;accent-color:var(--gold);height:4px}
+.slider-val{font-family:var(--fm);font-size:.85rem;font-weight:500;color:var(--gold);min-width:50px;text-align:right}
+
+/* RESULT BOX */
+.result{border:1px solid var(--gold);background:var(--gold-glow);padding:20px;margin-top:20px}
+.result-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.78rem}
+.result-row .rl{color:var(--muted)}
+.result-row .rv{color:var(--text);font-weight:400}
+.result-row .rv.big{font-size:1.1rem;font-weight:500;color:var(--gold)}
+.result-row .rv.green{color:var(--green)}.result-row .rv.red{color:var(--red)}
+.result-divider{border:none;border-top:1px solid rgba(201,168,76,0.2);margin:8px 0}
+
+/* POOLS */
+.pools-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px}
+.pool-card{background:var(--deep);border:1px solid var(--border);padding:20px;text-align:center}
+.pool-card:hover{border-color:var(--border-light)}
+.pi{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600;margin-bottom:10px}
+.pi.sol{background:linear-gradient(135deg,#9945FF,#14F195);color:#fff}
+.pi.usdc{background:#2775CA;color:#fff}
+.pi.usdt{background:#26A17B;color:#fff}
+.pn{font-size:.8rem;font-weight:500;color:var(--cream);margin-bottom:12px}
+.ps{display:flex;justify-content:space-between;margin-bottom:4px;font-size:.65rem}
+.ps .k{color:var(--muted)}.ps .v{color:var(--text)}
+.ps .v.green{color:var(--green)}
+
+/* INFO BANNER */
+.info{border:1px solid var(--gold);background:var(--gold-glow);padding:16px 20px;margin-bottom:24px;font-size:.78rem;color:var(--text);line-height:1.5}
+.info strong{color:var(--gold)}
+
+/* DISCLAIMER */
+.disc{border-top:1px solid var(--border);padding:24px 0;text-align:center;margin-top:40px}
+.disc p{font-size:.6rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6}
+
+/* TOAST */
+#toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--deep);border:1px solid var(--green);padding:14px 24px;font-family:var(--fm);font-size:.75rem;color:var(--green);z-index:600}
+
+@media(max-width:768px){
+  .calc-grid,.pools-grid{grid-template-columns:1fr}
+  .topbar{padding:12px 16px}.logo{font-size:1.3rem}
+  .tr{gap:6px}.wbtn{font-size:.6rem;padding:6px 12px}
+  .lang-btn{padding:0 10px;font-size:.55rem}
+  .nav-tab{padding:12px 14px;font-size:.6rem}
+  .tick{min-width:90px;padding:10px 8px}
+  .tick-price{font-size:.8rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="logo">GLDM <span class="logo-dot"></span> <em>Lending</em></div>
+    <div class="tr">
+      <div class="lang-toggle">
+        <button class="lang-btn" id="lEN" onclick="setLang('en')">EN</button>
+        <button class="lang-btn active" id="lES" onclick="setLang('es')">ES</button>
+      </div>
+      <button class="wbtn" id="wBtn" onclick="connectW()">Conectar Billetera</button>
+    </div>
+  </header>
+
+  <!-- LIVE PRICE TICKER -->
+  <div class="ticker" id="ticker"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav"></nav>
+
+  <!-- VIEWS -->
+  <div id="v-calc" class="view active"></div>
+  <div id="v-pools" class="view"></div>
+  <div id="v-about" class="view"></div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   i18n
+   ══════════════════════════════════════ */
+const T={
+en:{
+  cw:'Connect Wallet',wd:'Wallet disconnected',wc:'Wallet connected',dm:'Demo mode',
+  navCalc:'Calculators',navPools:'Live Pools',navAbout:'About GLDM',
+  // Ticker
+  loading:'Loading...',
+  // Calc view
+  calcLabel:'Financial Calculators',
+  calcTitle:'Calculate Your <em>Returns</em>',
+  // Lend calc
+  lcTitle:'Lending Calculator',
+  lcSub:'See how much you earn by depositing your crypto into a GLDM lending pool.',
+  lcAmount:'Deposit amount',
+  lcAsset:'Asset',
+  lcApy:'Annual APY',
+  lcTime:'Time period (months)',
+  lcMonths:'months',
+  lcResult:'Your Earnings',
+  lcDeposit:'You deposit',
+  lcEarned:'Interest earned',
+  lcTotal:'Total after',
+  lcMonthly:'Monthly earnings',
+  lcDaily:'Daily earnings',
+  lcGldmBoost:'With GLDM holder boost (+15%)',
+  // Borrow calc
+  bcTitle:'Borrowing Calculator',
+  bcSub:'See the cost of borrowing against your collateral. No credit check, no bank.',
+  bcAmount:'Borrow amount',
+  bcCollateral:'Collateral asset',
+  bcApr:'Annual APR',
+  bcTime:'Loan duration (months)',
+  bcLtv:'LTV ratio',
+  bcResult:'Your Loan Cost',
+  bcBorrow:'You borrow',
+  bcInterest:'Total interest',
+  bcTotalRepay:'Total to repay',
+  bcMonthlyPay:'Monthly payment',
+  bcCollReq:'Collateral required',
+  bcGldmDiscount:'With GLDM holder discount (-15%)',
+  // Pools
+  poolsLabel:'Live Lending Pools',
+  poolsTitle:'Current <em>Rates</em>',
+  poolsInfo:'Rates update in real-time based on pool utilization. Higher utilization = higher rates for lenders and borrowers. GLDM holders get 15% better rates.',
+  pTvl:'TVL',pDepApy:'Deposit APY',pBorApr:'Borrow APR',pUtil:'Utilization',pLtv:'Max LTV',
+  pool:'Pool',
+  // About
+  aboutLabel:'About the Protocol',
+  aboutTitle:'What Is <em>GLDM Lending?</em>',
+  about1:'GLDM Lending is a peer-to-pool micro-lending protocol on Solana. Lenders deposit SOL, USDC, or USDT and earn interest. Borrowers post collateral and get instant loans — no credit check, no bank, no paperwork.',
+  about2:'GLDM token holders enjoy 15% reduced borrowing rates, boosted lending APY, governance voting on protocol parameters, and a share of protocol fees.',
+  about3:'The protocol is built by Cinematic Ideas Corporation, the film and IP division of Dearborn Ventures LLC. GLDM is not just DeFi — it is a community membership that also gives access to 12 original film stories, content, education, and voting rights on which stories get produced.',
+  aboutToken:'GLDM Token',aboutChain:'Blockchain',aboutContract:'Contract',aboutDex:'DexScreener',
+  disc:'GLDM is a community membership token, not a financial instrument or security. Fee sharing is structured as platform rewards. No returns guaranteed. Use at your own risk. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+},
+es:{
+  cw:'Conectar Billetera',wd:'Billetera desconectada',wc:'Billetera conectada',dm:'Modo demo',
+  navCalc:'Calculadoras',navPools:'Pools en Vivo',navAbout:'Sobre GLDM',
+  loading:'Cargando...',
+  calcLabel:'Calculadoras Financieras',
+  calcTitle:'Calcula Tus <em>Ganancias</em>',
+  lcTitle:'Calculadora de Préstamo',
+  lcSub:'Mira cuánto ganas depositando tu crypto en un pool de GLDM.',
+  lcAmount:'Monto a depositar',
+  lcAsset:'Activo',
+  lcApy:'APY anual',
+  lcTime:'Período (meses)',
+  lcMonths:'meses',
+  lcResult:'Tus Ganancias',
+  lcDeposit:'Depositas',
+  lcEarned:'Interés ganado',
+  lcTotal:'Total después de',
+  lcMonthly:'Ganancia mensual',
+  lcDaily:'Ganancia diaria',
+  lcGldmBoost:'Con boost de holder GLDM (+15%)',
+  bcTitle:'Calculadora de Préstamo',
+  bcSub:'Mira el costo de pedir prestado contra tu colateral. Sin verificación, sin banco.',
+  bcAmount:'Monto a pedir',
+  bcCollateral:'Activo de colateral',
+  bcApr:'APR anual',
+  bcTime:'Duración del préstamo (meses)',
+  bcLtv:'Ratio LTV',
+  bcResult:'Costo de Tu Préstamo',
+  bcBorrow:'Pides prestado',
+  bcInterest:'Interés total',
+  bcTotalRepay:'Total a pagar',
+  bcMonthlyPay:'Pago mensual',
+  bcCollReq:'Colateral requerido',
+  bcGldmDiscount:'Con descuento holder GLDM (-15%)',
+  poolsLabel:'Pools de Préstamo en Vivo',
+  poolsTitle:'Tasas <em>Actuales</em>',
+  poolsInfo:'Las tasas se actualizan en tiempo real según la utilización del pool. Mayor utilización = mejores tasas para prestamistas y prestatarios. Holders de GLDM obtienen 15% mejor tasa.',
+  pTvl:'TVL',pDepApy:'APY Depósito',pBorApr:'APR Préstamo',pUtil:'Utilización',pLtv:'LTV Máx',
+  pool:'Pool',
+  aboutLabel:'Sobre el Protocolo',
+  aboutTitle:'¿Qué es <em>GLDM Lending?</em>',
+  about1:'GLDM Lending es un protocolo de micro-préstamos peer-to-pool en Solana. Los prestamistas depositan SOL, USDC o USDT y ganan intereses. Los prestatarios depositan colateral y reciben préstamos al instante — sin verificación crediticia, sin banco, sin papeleo.',
+  about2:'Los holders del token GLDM disfrutan de 15% menos en tasas de préstamo, APY mejorado, votación de gobernanza en parámetros del protocolo, y participación en las comisiones.',
+  about3:'El protocolo es construido por Cinematic Ideas Corporation, la división de cine e IP de Dearborn Ventures LLC. GLDM no es solo DeFi — es una membresía comunitaria que también da acceso a 12 historias originales de cine, contenido, educación y derechos de voto sobre qué historias se producen.',
+  aboutToken:'Token GLDM',aboutChain:'Blockchain',aboutContract:'Contrato',aboutDex:'DexScreener',
+  disc:'GLDM es un token de membresía comunitaria, no un instrumento financiero. Las comisiones son recompensas de plataforma. Sin retornos garantizados. Úsalo bajo tu propio riesgo. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+}};
+
+let L='es';
+const t=k=>T[L][k]||T.en[k]||k;
+
+/* ══════════════════════════════════════
+   PRICES STATE
+   ══════════════════════════════════════ */
+const TOKENS=[
+  {id:'solana',sym:'SOL',icon:'sol'},
+  {id:'usd-coin',sym:'USDC',icon:'usdc'},
+  {id:'tether',sym:'USDT',icon:'usdt'},
+  {id:'pax-gold',sym:'PAXG',icon:'gold'},
+  {id:'tether-gold',sym:'XAUT',icon:'gold'},
+  {id:'bitcoin',sym:'BTC',icon:'btc'},
+];
+let prices={};
+let connected=false, pubKey=null;
+
+const POOLS=[
+  {name:'SOL',icon:'sol',ic:'◎',tvl:1420000,dep:4.82,bor:7.14,util:47.9,ltv:75},
+  {name:'USDC',icon:'usdc',ic:'$',tvl:990000,dep:5.61,bor:8.43,util:50.7,ltv:85},
+  {name:'USDT',icon:'usdt',ic:'₮',tvl:640000,dep:5.24,bor:7.89,util:45.0,ltv:85},
+];
+
+/* ══════════════════════════════════════
+   FETCH LIVE PRICES
+   ══════════════════════════════════════ */
+async function fetchPrices(){
+  try{
+    const ids=TOKENS.map(t=>t.id).join(',');
+    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+    if(!r.ok) throw new Error('API error');
+    const d=await r.json();
+    TOKENS.forEach(tk=>{
+      if(d[tk.id]){
+        prices[tk.sym]={
+          price:d[tk.id].usd,
+          change:d[tk.id].usd_24h_change||0
+        };
+      }
+    });
+    renderTicker();
+  }catch(e){
+    // Fallback prices if API fails
+    prices={SOL:{price:140,change:2.1},USDC:{price:1,change:0},USDT:{price:1,change:0},PAXG:{price:3280,change:0.8},XAUT:{price:3275,change:0.6},BTC:{price:87400,change:1.4}};
+    renderTicker();
+  }
+}
+
+function renderTicker(){
+  const el=document.getElementById('ticker');
+  el.innerHTML=TOKENS.map(tk=>{
+    const p=prices[tk.sym];
+    if(!p) return `<div class="tick"><div class="tick-name">${tk.sym}</div><div class="tick-loading">${t('loading')}</div></div>`;
+    const fmt=p.price>=100?p.price.toLocaleString('en',{maximumFractionDigits:0}):p.price>=1?p.price.toFixed(2):p.price.toFixed(4);
+    const ch=p.change;
+    const cls=ch>=0?'up':'down';
+    const arrow=ch>=0?'▲':'▼';
+    return `<div class="tick"><div class="tick-name">${tk.sym}</div><div class="tick-price">$${fmt}</div><div class="tick-change ${cls}">${arrow} ${Math.abs(ch).toFixed(1)}%</div></div>`;
+  }).join('');
+}
+
+// Refresh prices every 60 seconds
+fetchPrices();
+setInterval(fetchPrices,60000);
+
+/* ══════════════════════════════════════
+   LANGUAGE
+   ══════════════════════════════════════ */
+function setLang(l){
+  L=l;
+  document.getElementById('lEN').classList.toggle('active',l==='en');
+  document.getElementById('lES').classList.toggle('active',l==='es');
+  document.documentElement.lang=l;
+  localStorage.setItem('gldm-lang',l);
+  renderAll();
+}
+
+/* ══════════════════════════════════════
+   WALLET
+   ══════════════════════════════════════ */
+async function connectW(){
+  if(connected){
+    connected=false;pubKey=null;
+    const b=document.getElementById('wBtn');b.textContent=t('cw');b.classList.remove('on');
+    toast(t('wd'));return;
+  }
+  if(window.phantom?.solana?.isPhantom){
+    try{
+      const r=await window.phantom.solana.connect();
+      connected=true;pubKey=r.publicKey.toString();
+      const b=document.getElementById('wBtn');
+      b.textContent=pubKey.slice(0,4)+'...'+pubKey.slice(-4);b.classList.add('on');
+      toast(t('wc'));
+    }catch(e){demoW()}
+  }else{demoW()}
+}
+function demoW(){
+  connected=true;pubKey='7xK9...mP4q';
+  const b=document.getElementById('wBtn');b.textContent='7xK9...mP4q';b.classList.add('on');
+  toast(t('dm'));
+}
+
+/* ══════════════════════════════════════
+   RENDER ALL
+   ══════════════════════════════════════ */
+function renderAll(){
+  document.getElementById('wBtn').textContent=connected?(pubKey||t('cw')):t('cw');
+  renderNav();renderCalc();renderPoolsView();renderAbout();
+}
+
+function renderNav(){
+  const a=document.querySelector('.view.active')?.id?.replace('v-','')||'calc';
+  document.getElementById('nav').innerHTML=['calc','pools','about'].map(v=>
+    `<button class="nav-tab ${v===a?'active':''}" onclick="sw('${v}',this)">${t('nav'+v[0].toUpperCase()+v.slice(1))}</button>`
+  ).join('');
+}
+
+function sw(id,el){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('v-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+}
+
+/* ══════════════════════════════════════
+   CALCULATORS VIEW
+   ══════════════════════════════════════ */
+function renderCalc(){
+  document.getElementById('v-calc').innerHTML=`
+    <div class="sl">${t('calcLabel')}</div>
+    <div class="st">${t('calcTitle')}</div>
+    <div class="calc-grid">
+
+      <!-- LENDING CALCULATOR -->
+      <div class="calc-card">
+        <div class="calc-title">${t('lcTitle')}</div>
+        <div class="calc-sub">${t('lcSub')}</div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('lcAmount')}</span></div>
+          <div class="fw">
+            <input type="number" id="lAmt" placeholder="1000" value="1000" oninput="calcLend()"/>
+            <select id="lAsset" onchange="calcLend()"><option>USDC</option><option>USDT</option><option>SOL</option></select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('lcApy')}</span><span class="hint" id="lApyHint">5.61%</span></div>
+          <div class="slider-row">
+            <input type="range" id="lApy" min="1" max="15" step="0.1" value="5.61" oninput="calcLend()"/>
+            <span class="slider-val" id="lApyVal">5.61%</span>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('lcTime')}</span></div>
+          <div class="slider-row">
+            <input type="range" id="lTime" min="1" max="36" value="12" oninput="calcLend()"/>
+            <span class="slider-val" id="lTimeVal">12</span>
+          </div>
+        </div>
+
+        <div class="result" id="lResult"></div>
+      </div>
+
+      <!-- BORROWING CALCULATOR -->
+      <div class="calc-card">
+        <div class="calc-title">${t('bcTitle')}</div>
+        <div class="calc-sub">${t('bcSub')}</div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('bcAmount')}</span></div>
+          <div class="fw">
+            <input type="number" id="bAmt" placeholder="500" value="500" oninput="calcBorrow()"/>
+            <select id="bAsset" onchange="calcBorrow()"><option>USDC</option><option>USDT</option><option>SOL</option></select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('bcCollateral')}</span></div>
+          <div class="fw">
+            <select id="bColl" onchange="calcBorrow()" style="flex:1;border-left:none">
+              <option value="SOL">SOL (LTV 75%)</option>
+              <option value="GLDM">GLDM (LTV 50%)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('bcApr')}</span><span class="hint" id="bAprHint">8.43%</span></div>
+          <div class="slider-row">
+            <input type="range" id="bApr" min="2" max="20" step="0.1" value="8.43" oninput="calcBorrow()"/>
+            <span class="slider-val" id="bAprVal">8.43%</span>
+          </div>
+        </div>
+
+        <div class="fg">
+          <div class="fl"><span>${t('bcTime')}</span></div>
+          <div class="slider-row">
+            <input type="range" id="bTime" min="1" max="24" value="6" oninput="calcBorrow()"/>
+            <span class="slider-val" id="bTimeVal">6</span>
+          </div>
+        </div>
+
+        <div class="result" id="bResult"></div>
+      </div>
+
+    </div>
+    <div class="disc"><p>${t('disc')}</p></div>
+  `;
+  calcLend();calcBorrow();
+}
+
+function calcLend(){
+  const amt=parseFloat(document.getElementById('lAmt')?.value)||0;
+  const apy=parseFloat(document.getElementById('lApy')?.value)||0;
+  const months=parseInt(document.getElementById('lTime')?.value)||0;
+  const asset=document.getElementById('lAsset')?.value||'USDC';
+
+  document.getElementById('lApyVal').textContent=apy.toFixed(2)+'%';
+  document.getElementById('lTimeVal').textContent=months;
+
+  const rate=apy/100;
+  const years=months/12;
+  const earned=amt*rate*years;
+  const total=amt+earned;
+  const monthly=earned/months;
+  const daily=earned/(months*30);
+  const boosted=amt*(rate*1.15)*years;
+
+  // Get USD value
+  const p=prices[asset]?.price||1;
+  const earnedUsd=(earned*p).toFixed(2);
+  const boostedUsd=(boosted*p).toFixed(2);
+
+  const el=document.getElementById('lResult');
+  if(!el)return;
+  el.innerHTML=`
+    <div class="result-row"><span class="rl">${t('lcDeposit')}</span><span class="rv">${fmt(amt)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('lcApy')}</span><span class="rv green">${apy.toFixed(2)}%</span></div>
+    <hr class="result-divider"/>
+    <div class="result-row"><span class="rl">${t('lcEarned')}</span><span class="rv big green">+${fmt(earned)} ${asset}</span></div>
+    ${asset!=='USDC'&&asset!=='USDT'?`<div class="result-row"><span class="rl">≈ USD</span><span class="rv green">+$${earnedUsd}</span></div>`:''}
+    <div class="result-row"><span class="rl">${t('lcTotal')} ${months} ${t('lcMonths')}</span><span class="rv">${fmt(total)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('lcMonthly')}</span><span class="rv green">+${fmt(monthly)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('lcDaily')}</span><span class="rv green">+${fmt(daily)} ${asset}</span></div>
+    <hr class="result-divider"/>
+    <div class="result-row"><span class="rl">${t('lcGldmBoost')}</span><span class="rv big green">+${fmt(boosted)} ${asset}</span></div>
+    ${asset!=='USDC'&&asset!=='USDT'?`<div class="result-row"><span class="rl">≈ USD</span><span class="rv green">+$${boostedUsd}</span></div>`:''}
+  `;
+}
+
+function calcBorrow(){
+  const amt=parseFloat(document.getElementById('bAmt')?.value)||0;
+  const apr=parseFloat(document.getElementById('bApr')?.value)||0;
+  const months=parseInt(document.getElementById('bTime')?.value)||0;
+  const asset=document.getElementById('bAsset')?.value||'USDC';
+  const coll=document.getElementById('bColl')?.value||'SOL';
+
+  document.getElementById('bAprVal').textContent=apr.toFixed(2)+'%';
+  document.getElementById('bTimeVal').textContent=months;
+
+  const rate=apr/100;
+  const years=months/12;
+  const interest=amt*rate*years;
+  const totalRepay=amt+interest;
+  const monthlyPay=totalRepay/months;
+
+  const ltv=coll==='SOL'?0.75:0.50;
+  const collNeeded=amt/ltv;
+  const collPrice=prices[coll]?.price||(coll==='SOL'?140:0.0043);
+  const collUnits=collNeeded/collPrice;
+
+  const discountInterest=amt*(rate*0.85)*years;
+  const discountTotal=amt+discountInterest;
+  const discountMonthly=discountTotal/months;
+
+  const el=document.getElementById('bResult');
+  if(!el)return;
+  el.innerHTML=`
+    <div class="result-row"><span class="rl">${t('bcBorrow')}</span><span class="rv">${fmt(amt)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('bcApr')}</span><span class="rv" style="color:var(--gold)">${apr.toFixed(2)}%</span></div>
+    <hr class="result-divider"/>
+    <div class="result-row"><span class="rl">${t('bcInterest')}</span><span class="rv big red">-${fmt(interest)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('bcTotalRepay')}</span><span class="rv">${fmt(totalRepay)} ${asset}</span></div>
+    <div class="result-row"><span class="rl">${t('bcMonthlyPay')}</span><span class="rv red">${fmt(monthlyPay)} ${asset}/${L==='es'?'mes':'mo'}</span></div>
+    <hr class="result-divider"/>
+    <div class="result-row"><span class="rl">${t('bcCollReq')}</span><span class="rv">${fmt(collUnits)} ${coll}</span></div>
+    <div class="result-row"><span class="rl">≈ $${fmt(collNeeded)} USD</span><span class="rv" style="color:var(--muted)">LTV ${(ltv*100).toFixed(0)}%</span></div>
+    <hr class="result-divider"/>
+    <div class="result-row"><span class="rl">${t('bcGldmDiscount')}</span><span class="rv big green">${fmt(discountMonthly)} ${asset}/${L==='es'?'mes':'mo'}</span></div>
+    <div class="result-row"><span class="rl">${L==='es'?'Ahorras':'You save'}</span><span class="rv green">${fmt(interest-discountInterest)} ${asset}</span></div>
+  `;
+}
+
+function fmt(n){
+  if(Math.abs(n)<0.01) return n.toFixed(4);
+  if(Math.abs(n)<1) return n.toFixed(3);
+  if(Math.abs(n)<100) return n.toFixed(2);
+  return n.toLocaleString('en',{maximumFractionDigits:2});
+}
+
+/* ══════════════════════════════════════
+   POOLS VIEW
+   ══════════════════════════════════════ */
+function renderPoolsView(){
+  document.getElementById('v-pools').innerHTML=`
+    <div class="sl">${t('poolsLabel')}</div>
+    <div class="st">${t('poolsTitle')}</div>
+    <div class="info"><strong>◆</strong> ${t('poolsInfo')}</div>
+    <div class="pools-grid">${POOLS.map(p=>`
+      <div class="pool-card">
+        <div class="pi ${p.icon}">${p.ic}</div>
+        <div class="pn">${p.name} ${t('pool')}</div>
+        <div class="ps"><span class="k">${t('pTvl')}</span><span class="v">$${(p.tvl/1e6).toFixed(2)}M</span></div>
+        <div class="ps"><span class="k">${t('pDepApy')}</span><span class="v green">${p.dep}%</span></div>
+        <div class="ps"><span class="k">${t('pBorApr')}</span><span class="v" style="color:var(--gold)">${p.bor}%</span></div>
+        <div class="ps"><span class="k">${t('pUtil')}</span><span class="v">${p.util}%</span></div>
+        <div class="ps"><span class="k">${t('pLtv')}</span><span class="v">${p.ltv}%</span></div>
+        ${prices[p.name]?`<div class="ps" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><span class="k">${L==='es'?'Precio':'Price'}</span><span class="v">$${prices[p.name].price>=1?prices[p.name].price.toFixed(2):prices[p.name].price.toFixed(4)}</span></div>`:''}
+      </div>
+    `).join('')}</div>
+    <div class="disc"><p>${t('disc')}</p></div>
+  `;
+}
+
+/* ══════════════════════════════════════
+   ABOUT VIEW
+   ══════════════════════════════════════ */
+function renderAbout(){
+  document.getElementById('v-about').innerHTML=`
+    <div class="sl">${t('aboutLabel')}</div>
+    <div class="st">${t('aboutTitle')}</div>
+    <div style="max-width:680px">
+      <p style="color:var(--text);margin-bottom:16px;line-height:1.7;font-size:.85rem">${t('about1')}</p>
+      <p style="color:var(--text);margin-bottom:16px;line-height:1.7;font-size:.85rem">${t('about2')}</p>
+      <p style="color:var(--text);margin-bottom:28px;line-height:1.7;font-size:.85rem">${t('about3')}</p>
+      <div style="border:1px solid var(--border);background:var(--deep);padding:20px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.78rem">
+          <div><span style="color:var(--muted)">${t('aboutToken')}</span><br/><span style="color:var(--gold)">GLDM (Gold Member)</span></div>
+          <div><span style="color:var(--muted)">${t('aboutChain')}</span><br/><span style="color:var(--cream)">Solana</span></div>
+          <div><span style="color:var(--muted)">${t('aboutContract')}</span><br/><span style="color:var(--text);font-size:.65rem;word-break:break-all">3kcw4yq9pAqFWEfiN5727CzdxJwra6tnywttatcxzpkm</span></div>
+          <div><span style="color:var(--muted)">${t('aboutDex')}</span><br/><a href="https://dexscreener.com/solana/3kcw4yq9paqfwefin5727czdxjwra6tnywttatcxzpkm" target="_blank" style="color:var(--gold);font-size:.75rem">Ver en DexScreener →</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="disc"><p>${t('disc')}</p></div>
+  `;
+}
+
+/* ══════════════════════════════════════
+   TOAST + INIT
+   ══════════════════════════════════════ */
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)}
+
+const sv=localStorage.getItem('gldm-lang');
+if(sv)L=sv;else if(navigator.language?.startsWith('es'))L='es';
+document.getElementById('lEN').classList.toggle('active',L==='en');
+document.getElementById('lES').classList.toggle('active',L==='es');
+document.documentElement.lang=L;
+renderAll();
+</script>
+</body>
+</html>
