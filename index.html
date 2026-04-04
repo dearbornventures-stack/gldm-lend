@@ -42,19 +42,14 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
 .sl{font-family:var(--fm);font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px}
 .st{font-family:var(--fd);font-size:1.8rem;font-weight:300;color:var(--cream);margin-bottom:24px;line-height:1.15}
 .st em{font-style:italic;color:var(--gold)}
-
-/* POOL STATE BAR */
 .pool-state{background:var(--deep);border:1px solid var(--border);padding:20px 24px;margin-bottom:24px}
 .pool-state-title{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .pool-state-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.ps-item{}
 .ps-label{font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .ps-val{font-family:var(--fm);font-size:1rem;font-weight:500;color:var(--cream)}
 .ps-val.green{color:var(--green)}.ps-val.gold{color:var(--gold)}
 .util-bar{height:6px;background:var(--surface);border-radius:3px;margin-top:12px;overflow:hidden}
-.util-fill{height:100%;border-radius:3px;transition:width .5s ease,background .5s ease}
-
-/* CALC */
+.util-fill{height:100%;border-radius:3px;transition:width .5s ease}
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
 .calc-card{background:var(--deep);border:1px solid var(--border);padding:28px 24px;position:relative;overflow:hidden}
 .calc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
@@ -85,27 +80,51 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
 .rate-label{display:inline-block;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;margin-bottom:8px}
 .rate-label.lend{border:1px solid var(--green);color:var(--green)}
 .rate-label.borrow{border:1px solid var(--gold);color:var(--gold)}
+.info-banner{border:1px solid var(--gold);background:var(--gold-glow);padding:14px 18px;margin-bottom:20px;font-size:.75rem;color:var(--text);line-height:1.5}
+.info-banner strong{color:var(--gold)}
 
-/* CURVE */
-.curve-section{margin-top:32px}
+/* STEPS */
+.steps-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+.step-col{background:var(--deep);border:1px solid var(--border);padding:0;overflow:hidden}
+.step-header{padding:20px 24px;border-bottom:1px solid var(--border)}
+.step-header.lend{border-top:2px solid var(--green)}
+.step-header.borrow{border-top:2px solid var(--gold)}
+.step-header-title{font-family:var(--fd);font-size:1.15rem;font-weight:300;color:var(--cream);margin-bottom:2px}
+.step-header-sub{font-size:.7rem;color:var(--muted)}
+.step{display:flex;gap:14px;padding:16px 24px;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600;flex-shrink:0;margin-top:2px}
+.step-num.lend{background:rgba(76,175,118,0.15);color:var(--green);border:1px solid rgba(76,175,118,0.3)}
+.step-num.borrow{background:var(--gold-glow);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+.step-content{}
+.step-title{font-size:.78rem;font-weight:500;color:var(--cream);margin-bottom:2px}
+.step-desc{font-size:.7rem;color:var(--muted);line-height:1.5}
+.step-time{font-size:.58rem;color:var(--gold-dim);margin-top:4px;letter-spacing:.05em}
+
+/* SCENARIOS */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.scenario{background:var(--deep);border:1px solid var(--border);padding:20px}
+.scenario:hover{border-color:var(--border-light)}
+.scenario-icon{font-size:1.2rem;margin-bottom:8px}
+.scenario-title{font-size:.8rem;font-weight:500;color:var(--cream);margin-bottom:6px}
+.scenario-desc{font-size:.7rem;color:var(--muted);line-height:1.5}
+.scenario-numbers{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:.68rem}
+.scenario-numbers .row{display:flex;justify-content:space-between;padding:2px 0}
+.scenario-numbers .k{color:var(--muted)}.scenario-numbers .v{color:var(--text)}
+.scenario-numbers .v.green{color:var(--green)}.scenario-numbers .v.gold{color:var(--gold)}
+
 .curve-wrap{background:var(--deep);border:1px solid var(--border);padding:20px 24px}
-.curve-canvas{width:100%;height:200px;position:relative}
-
-/* ABOUT */
 .about-text{max-width:680px}
 .about-text p{color:var(--text);margin-bottom:14px;line-height:1.7;font-size:.82rem}
 .token-box{border:1px solid var(--border);background:var(--deep);padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.75rem;margin-top:20px}
 .token-box .k{color:var(--muted)}.token-box .v{color:var(--cream)}
 .token-box a{color:var(--gold)}
-
-.info-banner{border:1px solid var(--gold);background:var(--gold-glow);padding:14px 18px;margin-bottom:20px;font-size:.75rem;color:var(--text);line-height:1.5}
-.info-banner strong{color:var(--gold)}
 .disc{border-top:1px solid var(--border);padding:24px 0;text-align:center;margin-top:40px}
 .disc p{font-size:.58rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6}
 #toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--deep);border:1px solid var(--green);padding:14px 24px;font-family:var(--fm);font-size:.75rem;color:var(--green);z-index:600}
 
 @media(max-width:768px){
-  .calc-grid{grid-template-columns:1fr}
+  .calc-grid,.steps-grid,.scenario-grid{grid-template-columns:1fr}
   .pool-state-grid{grid-template-columns:repeat(3,1fr);gap:10px}
   .topbar{padding:12px 16px}.logo{font-size:1.3rem}
   .tr{gap:6px}.wbtn{font-size:.58rem;padding:6px 10px}
@@ -114,9 +133,7 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
   .tick{min-width:80px;padding:8px 6px}.tick-price{font-size:.78rem}
   .ps-val{font-size:.82rem}
 }
-@media(max-width:480px){
-  .pool-state-grid{grid-template-columns:1fr 1fr}
-}
+@media(max-width:480px){.pool-state-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -133,188 +150,196 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
   </header>
   <div class="ticker" id="ticker"></div>
   <nav class="nav" id="nav"></nav>
-  <div id="v-calc" class="view active"></div>
+  <div id="v-start" class="view active"></div>
+  <div id="v-calc" class="view"></div>
   <div id="v-curve" class="view"></div>
   <div id="v-about" class="view"></div>
 </div>
 <div id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════
-   i18n
-   ═══════════════════════════════════════ */
-const T={
-en:{
-  cw:'Connect Wallet',wd:'Disconnected',wc:'Connected',dm:'Demo mode',
-  navCalc:'Calculators',navCurve:'Rate Curve',navAbout:'About GLDM',
-  loading:'...',
-  poolState:'USDC Pool — Live State',
-  pDeposited:'Total deposited',pBorrowed:'Total borrowed',pAvailable:'Available',pUtil:'Utilization',pProtocolRev:'Protocol revenue/yr',
-  calcLabel:'Financial Calculators',calcTitle:'Calculate Your <em>Returns</em>',
-  lcTitle:'I want to LEND',lcSub:'Deposit USDC and earn interest. The rate is set by the market — when more people borrow, you earn more.',
-  lcAmount:'My deposit',
-  lcRate:'Current rate (set by market)',
-  lcTime:'Time period',lcMonths:'months',
-  lcR:'Your Earnings',lcDeposit:'You deposit',lcRate2:'Market APY',lcEarned:'You earn',lcTotal:'Total after',lcMonthly:'Per month',lcDaily:'Per day',
-  lcBoost:'With GLDM boost (+15%)',
-  bcTitle:'I want to BORROW',bcSub:'Post SOL as collateral and borrow USDC instantly. No credit check, no bank. Rate set by market.',
-  bcAmount:'I want to borrow',bcColl:'My collateral',
-  bcRate:'Current rate (set by market)',
-  bcTime:'Loan duration',
-  bcR:'Your Loan Cost',bcBorrow:'You borrow',bcRate2:'Market APR',bcInterest:'Total interest',bcRepay:'Total to repay',bcMonthly:'Monthly payment',bcCollReq:'Collateral needed',bcCollVal:'Collateral value',
-  bcDiscount:'With GLDM discount (-15%)',bcSave:'You save',
-  curveLabel:'Interest Rate Model',curveTitle:'How Rates Are <em>Set</em>',
-  curveInfo:'Rates are NOT set by anyone. They are computed automatically by the utilization rate — how much of the pool is being borrowed. This is the same model used by Aave, Compound, Kamino, and Save.',
-  curveExplain:'Below 80% utilization, rates rise gently. Above 80%, rates spike sharply — this incentivizes lenders to deposit more and borrowers to repay. The protocol takes 20% of all interest as revenue.',
-  curveBorrow:'Borrow APR',curveLend:'Lend APY',curveUtil:'Utilization',curveOptimal:'Optimal zone',
-  aboutLabel:'About the Protocol',aboutTitle:'What Is <em>GLDM Lending?</em>',
-  about1:'GLDM Lending is a peer-to-pool micro-lending protocol on Solana. Lenders deposit USDC and earn interest. Borrowers post SOL or GLDM as collateral and get instant loans — no credit check, no bank.',
-  about2:'Rates are set automatically by supply and demand. When more people borrow, rates go up (lenders earn more). When few people borrow, rates go down (borrowing is cheap). Nobody controls the rates.',
-  about3:'GLDM token holders get 15% better rates on both sides — higher APY for lending, lower APR for borrowing. Plus governance voting and access to the Cinematic Ideas film community.',
-  about4:'The protocol takes 20% of all interest as revenue. The rest goes to lenders. Collateral is always worth more than the loan (75% LTV max), so lenders are protected by design.',
-  aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contract',aboutDex:'DexScreener',
-  disc:'GLDM is a community membership token, not a security. No returns guaranteed. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
-  months:'mo',
-},
-es:{
-  cw:'Conectar Billetera',wd:'Desconectado',wc:'Conectado',dm:'Modo demo',
-  navCalc:'Calculadoras',navCurve:'Curva de Tasas',navAbout:'Sobre GLDM',
-  loading:'...',
-  poolState:'Pool USDC — Estado en Vivo',
-  pDeposited:'Total depositado',pBorrowed:'Total prestado',pAvailable:'Disponible',pUtil:'Utilización',pProtocolRev:'Ingreso protocolo/año',
-  calcLabel:'Calculadoras Financieras',calcTitle:'Calcula Tus <em>Ganancias</em>',
-  lcTitle:'Quiero PRESTAR',lcSub:'Deposita USDC y gana intereses. La tasa la pone el mercado — cuando más gente pide prestado, más ganas tú.',
-  lcAmount:'Mi depósito',
-  lcRate:'Tasa actual (la pone el mercado)',
-  lcTime:'Período',lcMonths:'meses',
-  lcR:'Tus Ganancias',lcDeposit:'Depositas',lcRate2:'APY del mercado',lcEarned:'Ganas',lcTotal:'Total después de',lcMonthly:'Por mes',lcDaily:'Por día',
-  lcBoost:'Con boost GLDM (+15%)',
-  bcTitle:'Quiero PEDIR PRESTADO',bcSub:'Deposita SOL como colateral y recibe USDC al instante. Sin verificación, sin banco. Tasa del mercado.',
-  bcAmount:'Quiero pedir prestado',bcColl:'Mi colateral',
-  bcRate:'Tasa actual (la pone el mercado)',
-  bcTime:'Duración del préstamo',
-  bcR:'Costo de Tu Préstamo',bcBorrow:'Pides prestado',bcRate2:'APR del mercado',bcInterest:'Interés total',bcRepay:'Total a pagar',bcMonthly:'Pago mensual',bcCollReq:'Colateral necesario',bcCollVal:'Valor del colateral',
-  bcDiscount:'Con descuento GLDM (-15%)',bcSave:'Ahorras',
-  curveLabel:'Modelo de Tasas de Interés',curveTitle:'Cómo Se Fijan <em>Las Tasas</em>',
-  curveInfo:'Las tasas NO las pone nadie. Se calculan automáticamente por la tasa de utilización — cuánto del pool está siendo prestado. Es el mismo modelo usado por Aave, Compound, Kamino y Save.',
-  curveExplain:'Debajo del 80% de utilización, las tasas suben suavemente. Arriba del 80%, las tasas suben bruscamente — esto incentiva a que los prestamistas depositen más y los prestatarios paguen. El protocolo toma 20% de todo el interés como ingreso.',
-  curveBorrow:'APR Préstamo',curveLend:'APY Depósito',curveUtil:'Utilización',curveOptimal:'Zona óptima',
-  aboutLabel:'Sobre el Protocolo',aboutTitle:'¿Qué es <em>GLDM Lending?</em>',
-  about1:'GLDM Lending es un protocolo de micro-préstamos en Solana. Los prestamistas depositan USDC y ganan intereses. Los prestatarios depositan SOL o GLDM como colateral y reciben préstamos al instante — sin verificación crediticia, sin banco.',
-  about2:'Las tasas se fijan automáticamente por oferta y demanda. Cuando más gente pide prestado, las tasas suben (los prestamistas ganan más). Cuando poca gente pide, las tasas bajan (pedir prestado es barato). Nadie controla las tasas.',
-  about3:'Los holders de GLDM reciben 15% mejor tasa en ambos lados — más APY para prestar, menos APR para pedir prestado. Más votación de gobernanza y acceso a la comunidad de cine Cinematic Ideas.',
-  about4:'El protocolo toma 20% de todo el interés como ingreso. El resto va a los prestamistas. El colateral siempre vale más que el préstamo (75% LTV máximo), así que los prestamistas están protegidos por diseño.',
-  aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contrato',aboutDex:'DexScreener',
-  disc:'GLDM es un token de membresía comunitaria, no un valor financiero. Sin retornos garantizados. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
-  months:'mes',
+const T={en:{
+cw:'Connect Wallet',wd:'Disconnected',wc:'Connected',dm:'Demo mode',
+navStart:'How to Start',navCalc:'Calculators',navCurve:'Rate Curve',navAbout:'About',
+loading:'...',
+// Start view
+startLabel:'Getting Started',startTitle:'How to <em>Start</em>',
+startIntro:'GLDM Lending connects people who have crypto and want to earn interest with people who have crypto and need a loan. No bank, no credit check, no paperwork. Here\'s how each side works:',
+lendHeader:'I want to EARN interest',lendHeaderSub:'You have USDC sitting on Binance doing nothing. Put it to work.',
+borrowHeader:'I want a LOAN',borrowHeaderSub:'You have SOL or crypto and need cash without selling it.',
+// Lend steps
+ls1t:'Open Binance',ls1d:'You already have an account. Go to your USDC balance.',ls1time:'You\'re already here',
+ls2t:'Install Phantom wallet',ls2d:'Download phantom.app on your phone or browser. Create a wallet — write down your 12 words and keep them safe.',ls2time:'2 minutes',
+ls3t:'Send USDC from Binance to Phantom',ls3d:'In Binance: Withdraw → USDC → Network: Solana → paste your Phantom USDC address. Fee: ~$1.',ls3time:'1–3 minutes',
+ls4t:'Connect to GLDM and deposit',ls4d:'Come to this site, click "Connect Wallet", choose your amount, click Deposit. Your USDC enters the pool and starts earning interest immediately.',ls4time:'30 seconds',
+ls5t:'Earn interest automatically',ls5d:'Interest accrues every second. Withdraw anytime. The rate goes up when more people borrow — the market sets it, not us.',ls5time:'Forever',
+// Borrow steps
+bs1t:'Open Binance',bs1d:'You already have SOL, BTC, or another crypto. Go to your SOL balance.',bs1time:'You\'re already here',
+bs2t:'Install Phantom wallet',bs2d:'Same as lending — download phantom.app and create a wallet.',bs2time:'2 minutes',
+bs3t:'Send SOL from Binance to Phantom',bs3d:'In Binance: Withdraw → SOL → Network: Solana → paste your Phantom SOL address. Fee: ~$0.01.',bs3time:'1–3 minutes',
+bs4t:'Connect and deposit collateral',bs4d:'Click "Connect Wallet" on this site. Deposit your SOL as collateral. The protocol calculates how much you can borrow (75% of your SOL value).',bs4time:'30 seconds',
+bs5t:'Borrow USDC instantly',bs5d:'Choose how much USDC you want. It arrives in your Phantom wallet in seconds. Send it to Binance and convert to bolivianos, pesos, or soles if you need fiat.',bs5time:'10 seconds',
+bs6t:'Repay when ready',bs6d:'Pay back the USDC + interest anytime. Your SOL collateral is returned to you. If SOL went up while you had the loan, you kept the upside.',bs6time:'Whenever you want',
+// Scenarios
+scenLabel:'Who Is This For?',scenTitle:'Real <em>Examples</em>',
+sc1icon:'◈',sc1t:'The Binance saver',sc1d:'Has $5,000 USDC sitting on Binance earning 0%. Deposits into GLDM pool, earns 4-6% APY without doing anything. Withdraws anytime.',
+sc1k1:'Deposits',sc1v1:'$5,000 USDC',sc1k2:'Earns per year',sc1v2:'+$250–$300',sc1k3:'Risk',sc1v3:'Low — collateral protects you',
+sc2icon:'◇',sc2t:'The SOL holder who needs cash',sc2d:'Has 2 SOL ($280) and needs $150 for an emergency. Doesn\'t want to sell because SOL might go up. Posts SOL as collateral, borrows $150 USDC.',
+sc2k1:'Has',sc2v1:'2 SOL ($280)',sc2k2:'Borrows',sc2v2:'$150 USDC',sc2k3:'Pays per month',sc2v3:'~$1.05 interest',
+sc3icon:'◆',sc3t:'The GLDM community member',sc3d:'Holds 50,000 GLDM from early days. Uses it as collateral to borrow $100. Gets 15% lower rates because of GLDM holder discount.',
+sc3k1:'Collateral',sc3v1:'50,000 GLDM',sc3k2:'Borrows',sc3v2:'$100 USDC',sc3k3:'Rate discount',sc3v3:'15% lower APR',
+sc4icon:'●',sc4t:'The gold-to-crypto person (coming soon)',sc4d:'Has a gold chain but no crypto. Brings it to a GLDM desk, receives SOL based on gold weight and purity. Now has collateral to borrow against.',
+sc4k1:'Brings',sc4v1:'Gold jewelry',sc4k2:'Receives',sc4v2:'SOL or GLDM',sc4k3:'Then can',sc4v3:'Borrow USDC',
+// Calc
+poolState:'USDC Pool — Live State',pDeposited:'Total deposited',pBorrowed:'Total borrowed',pAvailable:'Available',pUtil:'Utilization',pProtocolRev:'Protocol revenue/yr',
+calcLabel:'Financial Calculators',calcTitle:'Calculate Your <em>Returns</em>',
+lcTitle:'I want to LEND',lcSub:'Deposit USDC and earn interest. Rate is set by the market.',
+lcAmount:'My deposit',lcRate:'Current rate (set by market)',lcTime:'Time period',lcMonths:'months',
+lcR:'Your Earnings',lcDeposit:'You deposit',lcEarned:'You earn',lcTotal:'Total after',lcMonthly:'Per month',lcDaily:'Per day',lcBoost:'With GLDM boost (+15%)',
+bcTitle:'I want to BORROW',bcSub:'Post SOL as collateral, borrow USDC. No credit check.',
+bcAmount:'I want to borrow',bcRate:'Current rate (set by market)',bcTime:'Loan duration',
+bcR:'Your Loan Cost',bcBorrow:'You borrow',bcInterest:'Total interest',bcRepay:'Total to repay',bcMonthly:'Monthly payment',bcCollReq:'Collateral needed',bcCollVal:'Collateral value',bcDiscount:'With GLDM discount (-15%)',bcSave:'You save',
+poolAdjust:'Adjust pool to see rate changes',
+// Curve
+curveLabel:'Interest Rate Model',curveTitle:'How Rates Are <em>Set</em>',
+curveInfo:'Rates are NOT set by anyone. They are computed automatically by the utilization rate. Same model as Aave, Compound, Kamino, and Save.',
+curveExplain:'Below 80% utilization, rates rise gently. Above 80%, rates spike to attract lenders. The protocol takes 20% of all interest as revenue.',
+curveBorrow:'Borrow APR',curveLend:'Lend APY',curveUtil:'Utilization',curveOptimal:'Optimal zone',
+// About
+aboutLabel:'About the Protocol',aboutTitle:'What Is <em>GLDM Lending?</em>',
+about1:'GLDM Lending is a peer-to-pool micro-lending protocol on Solana. Lenders deposit USDC and earn interest. Borrowers post SOL or GLDM as collateral and get instant loans.',
+about2:'Rates are set automatically by supply and demand. Nobody controls them. When more people borrow, rates go up. When few people borrow, rates go down.',
+about3:'GLDM token holders get 15% better rates on both sides. Plus governance voting and access to the Cinematic Ideas film community with 12 original stories.',
+about4:'The protocol takes 20% of all interest as revenue. Collateral is always worth more than the loan (75% LTV max), so lenders are protected by design.',
+aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contract',aboutDex:'DexScreener',
+disc:'GLDM is a community membership token, not a security. No returns guaranteed. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+months:'mo',
+},es:{
+cw:'Conectar Billetera',wd:'Desconectado',wc:'Conectado',dm:'Modo demo',
+navStart:'Cómo Empezar',navCalc:'Calculadoras',navCurve:'Curva de Tasas',navAbout:'Sobre GLDM',
+loading:'...',
+startLabel:'Primeros Pasos',startTitle:'Cómo <em>Empezar</em>',
+startIntro:'GLDM Lending conecta a personas que tienen crypto y quieren ganar intereses con personas que tienen crypto y necesitan un préstamo. Sin banco, sin verificación crediticia, sin papeleo. Así funciona cada lado:',
+lendHeader:'Quiero GANAR intereses',lendHeaderSub:'Tenés USDC en Binance sin hacer nada. Ponelos a trabajar.',
+borrowHeader:'Quiero un PRÉSTAMO',borrowHeaderSub:'Tenés SOL u otra crypto y necesitás efectivo sin venderla.',
+ls1t:'Abrí Binance',ls1d:'Ya tenés cuenta. Andá a tu saldo de USDC.',ls1time:'Ya estás acá',
+ls2t:'Instalá Phantom wallet',ls2d:'Descargá phantom.app en tu celular o navegador. Creá una billetera — anotá tus 12 palabras y guardalas seguro.',ls2time:'2 minutos',
+ls3t:'Enviá USDC de Binance a Phantom',ls3d:'En Binance: Retirar → USDC → Red: Solana → pegá tu dirección USDC de Phantom. Costo: ~$1.',ls3time:'1–3 minutos',
+ls4t:'Conectate a GLDM y depositá',ls4d:'Vení a este sitio, hacé click en "Conectar Billetera", elegí tu monto, hacé click en Depositar. Tu USDC entra al pool y empieza a ganar intereses inmediatamente.',ls4time:'30 segundos',
+ls5t:'Ganá intereses automáticamente',ls5d:'Los intereses se acumulan cada segundo. Retirá cuando quieras. La tasa sube cuando más gente pide prestado — el mercado la fija, no nosotros.',ls5time:'Para siempre',
+bs1t:'Abrí Binance',bs1d:'Ya tenés SOL, BTC u otra crypto. Andá a tu saldo de SOL.',bs1time:'Ya estás acá',
+bs2t:'Instalá Phantom wallet',bs2d:'Igual que para prestar — descargá phantom.app y creá una billetera.',bs2time:'2 minutos',
+bs3t:'Enviá SOL de Binance a Phantom',bs3d:'En Binance: Retirar → SOL → Red: Solana → pegá tu dirección SOL de Phantom. Costo: ~$0.01.',bs3time:'1–3 minutos',
+bs4t:'Conectate y depositá colateral',bs4d:'Hacé click en "Conectar Billetera" en este sitio. Depositá tu SOL como colateral. El protocolo calcula cuánto podés pedir prestado (75% del valor de tu SOL).',bs4time:'30 segundos',
+bs5t:'Pedí prestado USDC al instante',bs5d:'Elegí cuánto USDC querés. Llega a tu Phantom en segundos. Envialo a Binance y convertilo a bolivianos, pesos o soles si necesitás fiat.',bs5time:'10 segundos',
+bs6t:'Pagá cuando puedas',bs6d:'Devolvé el USDC + intereses cuando quieras. Tu SOL de colateral te lo devuelven. Si SOL subió mientras tenías el préstamo, te quedás con la ganancia.',bs6time:'Cuando quieras',
+scenLabel:'¿Para Quién Es Esto?',scenTitle:'Ejemplos <em>Reales</em>',
+sc1icon:'◈',sc1t:'El ahorrador de Binance',sc1d:'Tiene $5,000 USDC en Binance ganando 0%. Deposita en el pool GLDM, gana 4-6% APY sin hacer nada. Retira cuando quiera.',
+sc1k1:'Deposita',sc1v1:'$5,000 USDC',sc1k2:'Gana por año',sc1v2:'+$250–$300',sc1k3:'Riesgo',sc1v3:'Bajo — el colateral te protege',
+sc2icon:'◇',sc2t:'El holder de SOL que necesita efectivo',sc2d:'Tiene 2 SOL ($280) y necesita $150 para una emergencia. No quiere vender porque SOL puede subir. Pone SOL como colateral, pide $150 USDC.',
+sc2k1:'Tiene',sc2v1:'2 SOL ($280)',sc2k2:'Pide prestado',sc2v2:'$150 USDC',sc2k3:'Paga por mes',sc2v3:'~$1.05 de interés',
+sc3icon:'◆',sc3t:'El miembro de la comunidad GLDM',sc3d:'Tiene 50,000 GLDM de hace tiempo. Los usa como colateral para pedir $100. Recibe 15% menos en tasas por ser holder de GLDM.',
+sc3k1:'Colateral',sc3v1:'50,000 GLDM',sc3k2:'Pide prestado',sc3v2:'$100 USDC',sc3k3:'Descuento en tasa',sc3v3:'15% menos APR',
+sc4icon:'●',sc4t:'El que tiene oro (próximamente)',sc4d:'Tiene una cadena de oro pero no tiene crypto. La lleva a un punto GLDM, recibe SOL según peso y pureza del oro. Ahora tiene colateral para pedir prestado.',
+sc4k1:'Trae',sc4v1:'Joyas de oro',sc4k2:'Recibe',sc4v2:'SOL o GLDM',sc4k3:'Después puede',sc4v3:'Pedir prestado USDC',
+poolState:'Pool USDC — Estado en Vivo',pDeposited:'Total depositado',pBorrowed:'Total prestado',pAvailable:'Disponible',pUtil:'Utilización',pProtocolRev:'Ingreso protocolo/año',
+calcLabel:'Calculadoras Financieras',calcTitle:'Calcula Tus <em>Ganancias</em>',
+lcTitle:'Quiero PRESTAR',lcSub:'Depositá USDC y ganá intereses. La tasa la pone el mercado.',
+lcAmount:'Mi depósito',lcRate:'Tasa actual (la pone el mercado)',lcTime:'Período',lcMonths:'meses',
+lcR:'Tus Ganancias',lcDeposit:'Depositás',lcEarned:'Ganás',lcTotal:'Total después de',lcMonthly:'Por mes',lcDaily:'Por día',lcBoost:'Con boost GLDM (+15%)',
+bcTitle:'Quiero PEDIR PRESTADO',bcSub:'Depositá SOL como colateral, pedí USDC. Sin verificación.',
+bcAmount:'Quiero pedir prestado',bcRate:'Tasa actual (la pone el mercado)',bcTime:'Duración del préstamo',
+bcR:'Costo de Tu Préstamo',bcBorrow:'Pedís prestado',bcInterest:'Interés total',bcRepay:'Total a pagar',bcMonthly:'Pago mensual',bcCollReq:'Colateral necesario',bcCollVal:'Valor del colateral',bcDiscount:'Con descuento GLDM (-15%)',bcSave:'Ahorrás',
+poolAdjust:'Ajustá el pool para ver cómo cambian las tasas',
+curveLabel:'Modelo de Tasas',curveTitle:'Cómo Se Fijan <em>Las Tasas</em>',
+curveInfo:'Las tasas NO las pone nadie. Se calculan por la utilización del pool. Mismo modelo que Aave, Compound, Kamino y Save.',
+curveExplain:'Debajo del 80%, las tasas suben suave. Arriba del 80%, suben agresivo para atraer prestamistas. El protocolo toma 20% de todo el interés.',
+curveBorrow:'APR Préstamo',curveLend:'APY Depósito',curveUtil:'Utilización',curveOptimal:'Zona óptima',
+aboutLabel:'Sobre el Protocolo',aboutTitle:'¿Qué es <em>GLDM Lending?</em>',
+about1:'GLDM Lending es un protocolo de micro-préstamos en Solana. Los prestamistas depositan USDC y ganan intereses. Los prestatarios depositan SOL o GLDM como colateral y reciben préstamos al instante.',
+about2:'Las tasas se fijan automáticamente por oferta y demanda. Nadie las controla. Cuando más gente pide prestado, suben. Cuando poca gente pide, bajan.',
+about3:'Los holders de GLDM reciben 15% mejor tasa en ambos lados. Más votación de gobernanza y acceso a la comunidad de cine Cinematic Ideas con 12 historias originales.',
+about4:'El protocolo toma 20% de todo el interés como ingreso. El colateral siempre vale más que el préstamo (75% LTV máximo), así que los prestamistas están protegidos por diseño.',
+aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contrato',aboutDex:'DexScreener',
+disc:'GLDM es un token de membresía comunitaria, no un valor financiero. Sin retornos garantizados. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+months:'mes',
 }};
 
-let L='es';
-const t=k=>T[L][k]||T.en[k]||k;
+let L='es';const t=k=>T[L][k]||T.en[k]||k;
 
-/* ═══════════════════════════════════════
-   INTEREST RATE MODEL (Aave-style)
-   ═══════════════════════════════════════ */
-const MODEL = {
-  baseRate: 0.02,      // 2% base
-  slope1: 0.04,        // +4% up to optimal
-  slope2: 0.60,        // +60% above optimal (steep)
-  optimal: 0.80,       // 80% optimal utilization
-  protocolFee: 0.20,   // 20% of interest → protocol
-};
+/* RATE MODEL */
+const M={base:0.02,s1:0.04,s2:0.60,opt:0.80,fee:0.20};
+function bRate(u){return u<=M.opt?M.base+(u/M.opt)*M.s1:M.base+M.s1+((u-M.opt)/(1-M.opt))*M.s2}
+function lRate(u){return bRate(u)*u*(1-M.fee)}
+function pRev(u,d){return bRate(u)*u*d*M.fee}
 
-function getBorrowRate(util) {
-  if (util <= MODEL.optimal) {
-    return MODEL.baseRate + (util / MODEL.optimal) * MODEL.slope1;
-  }
-  return MODEL.baseRate + MODEL.slope1 + ((util - MODEL.optimal) / (1 - MODEL.optimal)) * MODEL.slope2;
-}
+let pool={deposited:5000,borrowed:2000};
+function pUtil(){return pool.deposited>0?pool.borrowed/pool.deposited:0}
 
-function getLendRate(util) {
-  return getBorrowRate(util) * util * (1 - MODEL.protocolFee);
-}
-
-function getProtocolRevenue(util, totalDeposited) {
-  return getBorrowRate(util) * util * totalDeposited * MODEL.protocolFee;
-}
-
-/* ═══════════════════════════════════════
-   POOL STATE (simulated)
-   ═══════════════════════════════════════ */
-let pool = {
-  deposited: 5000,
-  borrowed: 2000,
-};
-
-function poolUtil() { return pool.deposited > 0 ? pool.borrowed / pool.deposited : 0; }
-
-/* ═══════════════════════════════════════
-   PRICES
-   ═══════════════════════════════════════ */
-const TOKENS=[
-  {id:'solana',sym:'SOL'},{id:'usd-coin',sym:'USDC'},{id:'tether',sym:'USDT'},
-  {id:'pax-gold',sym:'PAXG'},{id:'tether-gold',sym:'XAUT'},{id:'bitcoin',sym:'BTC'},
-];
+/* PRICES */
+const TK=[{id:'solana',sym:'SOL'},{id:'usd-coin',sym:'USDC'},{id:'tether',sym:'USDT'},{id:'pax-gold',sym:'PAXG'},{id:'tether-gold',sym:'XAUT'},{id:'bitcoin',sym:'BTC'}];
 let prices={SOL:{price:140,change:0},USDC:{price:1,change:0},USDT:{price:1,change:0},PAXG:{price:3280,change:0},XAUT:{price:3275,change:0},BTC:{price:87400,change:0}};
+async function fetchP(){try{const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${TK.map(t=>t.id).join(',')}&vs_currencies=usd&include_24hr_change=true`);if(!r.ok)return;const d=await r.json();TK.forEach(tk=>{if(d[tk.id])prices[tk.sym]={price:d[tk.id].usd,change:d[tk.id].usd_24h_change||0}});renderTicker()}catch(e){}}
+function renderTicker(){document.getElementById('ticker').innerHTML=TK.map(tk=>{const p=prices[tk.sym];const f=p.price>=100?p.price.toLocaleString('en',{maximumFractionDigits:0}):p.price>=1?p.price.toFixed(2):p.price.toFixed(4);const c=p.change,cl=c>=0?'up':'down',ar=c>=0?'▲':'▼';return`<div class="tick"><div class="tick-name">${tk.sym}</div><div class="tick-price">$${f}</div><div class="tick-change ${cl}">${ar} ${Math.abs(c).toFixed(1)}%</div></div>`}).join('')}
+fetchP();setInterval(fetchP,60000);renderTicker();
 
-async function fetchPrices(){
-  try{
-    const ids=TOKENS.map(t=>t.id).join(',');
-    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
-    if(!r.ok) return;
-    const d=await r.json();
-    TOKENS.forEach(tk=>{if(d[tk.id])prices[tk.sym]={price:d[tk.id].usd,change:d[tk.id].usd_24h_change||0}});
-    renderTicker();
-  }catch(e){}
-}
-function renderTicker(){
-  document.getElementById('ticker').innerHTML=TOKENS.map(tk=>{
-    const p=prices[tk.sym];
-    const fmt=p.price>=100?p.price.toLocaleString('en',{maximumFractionDigits:0}):p.price>=1?p.price.toFixed(2):p.price.toFixed(4);
-    const c=p.change,cls=c>=0?'up':'down',ar=c>=0?'▲':'▼';
-    return `<div class="tick"><div class="tick-name">${tk.sym}</div><div class="tick-price">$${fmt}</div><div class="tick-change ${cls}">${ar} ${Math.abs(c).toFixed(1)}%</div></div>`;
-  }).join('');
-}
-fetchPrices();setInterval(fetchPrices,60000);renderTicker();
-
-/* ═══════════════════════════════════════
-   WALLET
-   ═══════════════════════════════════════ */
+/* WALLET */
 let connected=false,pubKey=null;
-async function connectW(){
-  if(connected){connected=false;pubKey=null;document.getElementById('wBtn').textContent=t('cw');document.getElementById('wBtn').classList.remove('on');toast(t('wd'));return}
-  if(window.phantom?.solana?.isPhantom){try{const r=await window.phantom.solana.connect();connected=true;pubKey=r.publicKey.toString();const b=document.getElementById('wBtn');b.textContent=pubKey.slice(0,4)+'...'+pubKey.slice(-4);b.classList.add('on');toast(t('wc'))}catch(e){demoW()}}else{demoW()}
-}
-function demoW(){connected=true;pubKey='7xK9...mP4q';const b=document.getElementById('wBtn');b.textContent='7xK9...mP4q';b.classList.add('on');toast(t('dm'))}
+async function connectW(){if(connected){connected=false;pubKey=null;document.getElementById('wBtn').textContent=t('cw');document.getElementById('wBtn').classList.remove('on');toast(t('wd'));return}if(window.phantom?.solana?.isPhantom){try{const r=await window.phantom.solana.connect();connected=true;pubKey=r.publicKey.toString();const b=document.getElementById('wBtn');b.textContent=pubKey.slice(0,4)+'...'+pubKey.slice(-4);b.classList.add('on');toast(t('wc'))}catch(e){demoW()}}else{demoW()}}
+function demoW(){connected=true;pubKey='7xK9...mP4q';document.getElementById('wBtn').textContent='7xK9...mP4q';document.getElementById('wBtn').classList.add('on');toast(t('dm'))}
 
-/* ═══════════════════════════════════════
-   LANG & NAV
-   ═══════════════════════════════════════ */
+/* LANG & NAV */
 function setLang(l){L=l;document.getElementById('lEN').classList.toggle('active',l==='en');document.getElementById('lES').classList.toggle('active',l==='es');document.documentElement.lang=l;localStorage.setItem('gldm-lang',l);renderAll()}
-function renderNav(){
-  const a=document.querySelector('.view.active')?.id?.replace('v-','')||'calc';
-  document.getElementById('nav').innerHTML=['calc','curve','about'].map(v=>
-    `<button class="nav-tab ${v===a?'active':''}" onclick="sw('${v}',this)">${t('nav'+v[0].toUpperCase()+v.slice(1))}</button>`
-  ).join('');
-}
+function renderNav(){const a=document.querySelector('.view.active')?.id?.replace('v-','')||'start';document.getElementById('nav').innerHTML=['start','calc','curve','about'].map(v=>`<button class="nav-tab ${v===a?'active':''}" onclick="sw('${v}',this)">${t('nav'+v[0].toUpperCase()+v.slice(1))}</button>`).join('')}
 function sw(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.getElementById('v-'+id).classList.add('active');if(el)el.classList.add('active');if(id==='curve')drawCurve()}
-function renderAll(){document.getElementById('wBtn').textContent=connected?(pubKey||t('cw')):t('cw');renderNav();renderCalc();renderCurveView();renderAbout()}
+function renderAll(){document.getElementById('wBtn').textContent=connected?(pubKey||t('cw')):t('cw');renderNav();renderStart();renderCalc();renderCurveView();renderAbout()}
 
-/* ═══════════════════════════════════════
-   CALC VIEW
-   ═══════════════════════════════════════ */
+/* START VIEW */
+function renderStart(){
+  const lSteps=[['ls1t','ls1d','ls1time'],['ls2t','ls2d','ls2time'],['ls3t','ls3d','ls3time'],['ls4t','ls4d','ls4time'],['ls5t','ls5d','ls5time']];
+  const bSteps=[['bs1t','bs1d','bs1time'],['bs2t','bs2d','bs2time'],['bs3t','bs3d','bs3time'],['bs4t','bs4d','bs4time'],['bs5t','bs5d','bs5time'],['bs6t','bs6d','bs6time']];
+  const scens=['sc1','sc2','sc3','sc4'];
+
+  document.getElementById('v-start').innerHTML=`
+    <div class="sl">${t('startLabel')}</div>
+    <div class="st">${t('startTitle')}</div>
+    <p style="color:var(--text);font-size:.82rem;line-height:1.7;margin-bottom:28px;max-width:700px">${t('startIntro')}</p>
+
+    <div class="steps-grid">
+      <div class="step-col">
+        <div class="step-header lend"><div class="step-header-title">${t('lendHeader')}</div><div class="step-header-sub">${t('lendHeaderSub')}</div></div>
+        ${lSteps.map((s,i)=>`<div class="step"><div class="step-num lend">${i+1}</div><div class="step-content"><div class="step-title">${t(s[0])}</div><div class="step-desc">${t(s[1])}</div><div class="step-time">⏱ ${t(s[2])}</div></div></div>`).join('')}
+      </div>
+      <div class="step-col">
+        <div class="step-header borrow"><div class="step-header-title">${t('borrowHeader')}</div><div class="step-header-sub">${t('borrowHeaderSub')}</div></div>
+        ${bSteps.map((s,i)=>`<div class="step"><div class="step-num borrow">${i+1}</div><div class="step-content"><div class="step-title">${t(s[0])}</div><div class="step-desc">${t(s[1])}</div><div class="step-time">⏱ ${t(s[2])}</div></div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="sl">${t('scenLabel')}</div>
+    <div class="st">${t('scenTitle')}</div>
+    <div class="scenario-grid">
+      ${scens.map(s=>`<div class="scenario">
+        <div class="scenario-icon">${t(s+'icon')}</div>
+        <div class="scenario-title">${t(s+'t')}</div>
+        <div class="scenario-desc">${t(s+'d')}</div>
+        <div class="scenario-numbers">
+          <div class="row"><span class="k">${t(s+'k1')}</span><span class="v">${t(s+'v1')}</span></div>
+          <div class="row"><span class="k">${t(s+'k2')}</span><span class="v gold">${t(s+'v2')}</span></div>
+          <div class="row"><span class="k">${t(s+'k3')}</span><span class="v green">${t(s+'v3')}</span></div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div class="disc"><p>${t('disc')}</p></div>
+  `;
+}
+
+/* CALC VIEW */
 function renderCalc(){
-  const u=poolUtil();
-  const br=getBorrowRate(u)*100;
-  const lr=getLendRate(u)*100;
-  const rev=getProtocolRevenue(u,pool.deposited);
+  const u=pUtil(),br=bRate(u)*100,lr=lRate(u)*100,rev=pRev(u,pool.deposited);
   const uc=u>0.8?'var(--red)':u>0.6?'var(--gold)':'var(--green)';
-
   document.getElementById('v-calc').innerHTML=`
-    <div class="sl">${t('calcLabel')}</div>
-    <div class="st">${t('calcTitle')}</div>
-
-    <!-- POOL STATE -->
+    <div class="sl">${t('calcLabel')}</div><div class="st">${t('calcTitle')}</div>
     <div class="pool-state">
       <div class="pool-state-title">${t('poolState')}</div>
       <div class="pool-state-grid">
@@ -326,256 +351,106 @@ function renderCalc(){
       </div>
       <div class="util-bar"><div class="util-fill" style="width:${u*100}%;background:${uc}"></div></div>
     </div>
-
-    <div class="info-banner"><strong>◆</strong> ${L==='es'?'Ajusta el "Total depositado" y "Total prestado" arriba para ver cómo el mercado cambia las tasas automáticamente. Los números del pool afectan ambas calculadoras.':'Adjust "Total deposited" and "Total borrowed" above to see how the market changes rates automatically. Pool numbers affect both calculators.'}</div>
-
-    <!-- POOL CONTROLS -->
+    <div class="info-banner"><strong>◆</strong> ${t('poolAdjust')}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
-      <div class="fg">
-        <div class="fl"><span>${t('pDeposited')}</span><span class="auto">$${fm(pool.deposited)}</span></div>
-        <div class="slider-row"><input type="range" id="sDeposited" min="1000" max="100000" step="500" value="${pool.deposited}" oninput="updatePool()"/><span class="slider-val" id="vDeposited">$${fm(pool.deposited)}</span></div>
-      </div>
-      <div class="fg">
-        <div class="fl"><span>${t('pBorrowed')}</span><span class="auto">$${fm(pool.borrowed)}</span></div>
-        <div class="slider-row"><input type="range" id="sBorrowed" min="0" max="95000" step="500" value="${pool.borrowed}" oninput="updatePool()"/><span class="slider-val" id="vBorrowed">$${fm(pool.borrowed)}</span></div>
-      </div>
+      <div class="fg"><div class="fl"><span>${t('pDeposited')}</span><span class="auto">$${fm(pool.deposited)}</span></div><div class="slider-row"><input type="range" id="sD" min="1000" max="100000" step="500" value="${pool.deposited}" oninput="updPool()"/><span class="slider-val" id="vD">$${fm(pool.deposited)}</span></div></div>
+      <div class="fg"><div class="fl"><span>${t('pBorrowed')}</span><span class="auto">$${fm(pool.borrowed)}</span></div><div class="slider-row"><input type="range" id="sB" min="0" max="95000" step="500" value="${pool.borrowed}" oninput="updPool()"/><span class="slider-val" id="vB">$${fm(pool.borrowed)}</span></div></div>
     </div>
-
-    <!-- CALCULATORS -->
     <div class="calc-grid">
-
-      <!-- LEND -->
       <div class="calc-card lend">
-        <div class="calc-title">${t('lcTitle')}</div>
-        <div class="calc-sub">${t('lcSub')}</div>
-        <div class="fg">
-          <div class="fl"><span>${t('lcAmount')}</span></div>
-          <div class="fw"><input type="number" id="lAmt" placeholder="1000" value="1000" oninput="recalc()"/><span style="padding:10px 14px;color:var(--muted);border-left:1px solid var(--border)">USDC</span></div>
-        </div>
-        <div class="fg">
-          <div class="fl"><span>${t('lcRate')}</span><span class="auto" id="lRateShow">${lr.toFixed(2)}% APY</span></div>
-        </div>
-        <div class="fg">
-          <div class="fl"><span>${t('lcTime')}</span></div>
-          <div class="slider-row"><input type="range" id="lTime" min="1" max="36" value="12" oninput="recalc()"/><span class="slider-val" id="lTimeVal">12 ${t('months')}</span></div>
-        </div>
-        <div class="result lend" id="lResult"></div>
+        <div class="calc-title">${t('lcTitle')}</div><div class="calc-sub">${t('lcSub')}</div>
+        <div class="fg"><div class="fl"><span>${t('lcAmount')}</span></div><div class="fw"><input type="number" id="lA" placeholder="1000" value="1000" oninput="recalc()"/><span style="padding:10px 14px;color:var(--muted);border-left:1px solid var(--border)">USDC</span></div></div>
+        <div class="fg"><div class="fl"><span>${t('lcRate')}</span><span class="auto" id="lRS">${lr.toFixed(2)}% APY</span></div></div>
+        <div class="fg"><div class="fl"><span>${t('lcTime')}</span></div><div class="slider-row"><input type="range" id="lT" min="1" max="36" value="12" oninput="recalc()"/><span class="slider-val" id="lTV">12 ${t('months')}</span></div></div>
+        <div class="result lend" id="lR"></div>
       </div>
-
-      <!-- BORROW -->
       <div class="calc-card borrow">
-        <div class="calc-title">${t('bcTitle')}</div>
-        <div class="calc-sub">${t('bcSub')}</div>
-        <div class="fg">
-          <div class="fl"><span>${t('bcAmount')}</span></div>
-          <div class="fw"><input type="number" id="bAmt" placeholder="500" value="500" oninput="recalc()"/><span style="padding:10px 14px;color:var(--muted);border-left:1px solid var(--border)">USDC</span></div>
-        </div>
-        <div class="fg">
-          <div class="fl"><span>${t('bcRate')}</span><span class="auto" id="bRateShow">${br.toFixed(2)}% APR</span></div>
-        </div>
-        <div class="fg">
-          <div class="fl"><span>${t('bcTime')}</span></div>
-          <div class="slider-row"><input type="range" id="bTime" min="1" max="24" value="6" oninput="recalc()"/><span class="slider-val" id="bTimeVal">6 ${t('months')}</span></div>
-        </div>
-        <div class="result borrow" id="bResult"></div>
+        <div class="calc-title">${t('bcTitle')}</div><div class="calc-sub">${t('bcSub')}</div>
+        <div class="fg"><div class="fl"><span>${t('bcAmount')}</span></div><div class="fw"><input type="number" id="bA" placeholder="500" value="500" oninput="recalc()"/><span style="padding:10px 14px;color:var(--muted);border-left:1px solid var(--border)">USDC</span></div></div>
+        <div class="fg"><div class="fl"><span>${t('bcRate')}</span><span class="auto" id="bRS">${br.toFixed(2)}% APR</span></div></div>
+        <div class="fg"><div class="fl"><span>${t('bcTime')}</span></div><div class="slider-row"><input type="range" id="bT" min="1" max="24" value="6" oninput="recalc()"/><span class="slider-val" id="bTV">6 ${t('months')}</span></div></div>
+        <div class="result borrow" id="bR"></div>
       </div>
     </div>
-    <div class="disc"><p>${t('disc')}</p></div>
-  `;
+    <div class="disc"><p>${t('disc')}</p></div>`;
   recalc();
 }
 
-function updatePool(){
-  const d=parseInt(document.getElementById('sDeposited')?.value)||5000;
-  let b=parseInt(document.getElementById('sBorrowed')?.value)||0;
-  if(b>=d) b=Math.floor(d*0.95);
-  pool.deposited=d;pool.borrowed=b;
-  document.getElementById('vDeposited').textContent='$'+fm(d);
-  document.getElementById('vBorrowed').textContent='$'+fm(b);
-  renderCalc();
-}
+function updPool(){const d=parseInt(document.getElementById('sD')?.value)||5000;let b=parseInt(document.getElementById('sB')?.value)||0;if(b>=d)b=Math.floor(d*0.95);pool.deposited=d;pool.borrowed=b;renderCalc()}
 
 function recalc(){
-  const u=poolUtil();
-  const lr=getLendRate(u)*100;
-  const br=getBorrowRate(u)*100;
-
-  // Update rate displays
-  const lrs=document.getElementById('lRateShow');if(lrs)lrs.textContent=lr.toFixed(2)+'% APY';
-  const brs=document.getElementById('bRateShow');if(brs)brs.textContent=br.toFixed(2)+'% APR';
-
-  // LEND calc
-  const lAmt=parseFloat(document.getElementById('lAmt')?.value)||0;
-  const lMonths=parseInt(document.getElementById('lTime')?.value)||12;
-  const ltv=document.getElementById('lTimeVal');if(ltv)ltv.textContent=lMonths+' '+(L==='es'?'meses':t('months'));
-  const lYears=lMonths/12;
-  const lEarned=lAmt*(lr/100)*lYears;
-  const lBoosted=lAmt*(lr*1.15/100)*lYears;
-  const lMonthly=lEarned/lMonths;
-  const lDaily=lEarned/(lMonths*30);
-
-  const lR=document.getElementById('lResult');
-  if(lR) lR.innerHTML=`
-    <span class="rate-label lend">${lr.toFixed(2)}% APY</span>
-    <div class="rr"><span class="k">${t('lcDeposit')}</span><span class="v">$${fm(lAmt)} USDC</span></div>
+  const u=pUtil(),lr=lRate(u)*100,br=bRate(u)*100;
+  const ls=document.getElementById('lRS');if(ls)ls.textContent=lr.toFixed(2)+'% APY';
+  const bs=document.getElementById('bRS');if(bs)bs.textContent=br.toFixed(2)+'% APR';
+  // Lend
+  const la=parseFloat(document.getElementById('lA')?.value)||0;
+  const lm=parseInt(document.getElementById('lT')?.value)||12;
+  const ltv=document.getElementById('lTV');if(ltv)ltv.textContent=lm+' '+(L==='es'?'meses':t('months'));
+  const ly=lm/12,le=la*(lr/100)*ly,lb=la*(lr*1.15/100)*ly,lmo=le/lm,ld=le/(lm*30);
+  const lR=document.getElementById('lR');
+  if(lR)lR.innerHTML=`<span class="rate-label lend">${lr.toFixed(2)}% APY</span>
+    <div class="rr"><span class="k">${t('lcDeposit')}</span><span class="v">$${fm(la)} USDC</span></div><hr class="rdiv"/>
+    <div class="rr"><span class="k">${t('lcEarned')}</span><span class="v big green">+$${fm(le)}</span></div>
+    <div class="rr"><span class="k">${t('lcTotal')} ${lm} ${t('lcMonths')}</span><span class="v">$${fm(la+le)}</span></div>
+    <div class="rr"><span class="k">${t('lcMonthly')}</span><span class="v green">+$${fm(lmo)}</span></div>
+    <div class="rr"><span class="k">${t('lcDaily')}</span><span class="v green">+$${fm(ld)}</span></div>
+    <hr class="rdiv"/><div class="rr"><span class="k">${t('lcBoost')}</span><span class="v big green">+$${fm(lb)}</span></div>`;
+  // Borrow
+  const ba=parseFloat(document.getElementById('bA')?.value)||0;
+  const bm=parseInt(document.getElementById('bT')?.value)||6;
+  const btv=document.getElementById('bTV');if(btv)btv.textContent=bm+' '+(L==='es'?'meses':t('months'));
+  const by=bm/12,bi=ba*(br/100)*by,bt=ba+bi,bmo=bt/bm;
+  const cn=ba/0.75,sp=prices.SOL?.price||140,su=cn/sp;
+  const di=ba*(br*0.85/100)*by,dm=(ba+di)/bm;
+  const bR=document.getElementById('bR');
+  if(bR)bR.innerHTML=`<span class="rate-label borrow">${br.toFixed(2)}% APR</span>
+    <div class="rr"><span class="k">${t('bcBorrow')}</span><span class="v">$${fm(ba)} USDC</span></div><hr class="rdiv"/>
+    <div class="rr"><span class="k">${t('bcInterest')}</span><span class="v big red">-$${fm(bi)}</span></div>
+    <div class="rr"><span class="k">${t('bcRepay')}</span><span class="v">$${fm(bt)}</span></div>
+    <div class="rr"><span class="k">${t('bcMonthly')}</span><span class="v red">$${fm(bmo)}/${t('months')}</span></div>
     <hr class="rdiv"/>
-    <div class="rr"><span class="k">${t('lcEarned')}</span><span class="v big green">+$${fm(lEarned)}</span></div>
-    <div class="rr"><span class="k">${t('lcTotal')} ${lMonths} ${t('lcMonths')}</span><span class="v">$${fm(lAmt+lEarned)}</span></div>
-    <div class="rr"><span class="k">${t('lcMonthly')}</span><span class="v green">+$${fm(lMonthly)}</span></div>
-    <div class="rr"><span class="k">${t('lcDaily')}</span><span class="v green">+$${fm(lDaily)}</span></div>
+    <div class="rr"><span class="k">${t('bcCollReq')}</span><span class="v">${su.toFixed(2)} SOL</span></div>
+    <div class="rr"><span class="k">${t('bcCollVal')}</span><span class="v">$${fm(cn)} (LTV 75%)</span></div>
     <hr class="rdiv"/>
-    <div class="rr"><span class="k">${t('lcBoost')}</span><span class="v big green">+$${fm(lBoosted)}</span></div>
-  `;
-
-  // BORROW calc
-  const bAmt=parseFloat(document.getElementById('bAmt')?.value)||0;
-  const bMonths=parseInt(document.getElementById('bTime')?.value)||6;
-  const btv=document.getElementById('bTimeVal');if(btv)btv.textContent=bMonths+' '+(L==='es'?'meses':t('months'));
-  const bYears=bMonths/12;
-  const bInterest=bAmt*(br/100)*bYears;
-  const bTotal=bAmt+bInterest;
-  const bMonthlyPay=bTotal/bMonths;
-  const collNeeded=bAmt/0.75;
-  const solPrice=prices.SOL?.price||140;
-  const solNeeded=collNeeded/solPrice;
-  const discInterest=bAmt*(br*0.85/100)*bYears;
-  const discMonthly=(bAmt+discInterest)/bMonths;
-
-  const bR=document.getElementById('bResult');
-  if(bR) bR.innerHTML=`
-    <span class="rate-label borrow">${br.toFixed(2)}% APR</span>
-    <div class="rr"><span class="k">${t('bcBorrow')}</span><span class="v">$${fm(bAmt)} USDC</span></div>
-    <hr class="rdiv"/>
-    <div class="rr"><span class="k">${t('bcInterest')}</span><span class="v big red">-$${fm(bInterest)}</span></div>
-    <div class="rr"><span class="k">${t('bcRepay')}</span><span class="v">$${fm(bTotal)}</span></div>
-    <div class="rr"><span class="k">${t('bcMonthly')}</span><span class="v red">$${fm(bMonthlyPay)}/${t('months')}</span></div>
-    <hr class="rdiv"/>
-    <div class="rr"><span class="k">${t('bcCollReq')}</span><span class="v">${solNeeded.toFixed(2)} SOL</span></div>
-    <div class="rr"><span class="k">${t('bcCollVal')}</span><span class="v">$${fm(collNeeded)} (LTV 75%)</span></div>
-    <hr class="rdiv"/>
-    <div class="rr"><span class="k">${t('bcDiscount')}</span><span class="v big green">$${fm(discMonthly)}/${t('months')}</span></div>
-    <div class="rr"><span class="k">${t('bcSave')}</span><span class="v green">$${fm(bInterest-discInterest)}</span></div>
-  `;
+    <div class="rr"><span class="k">${t('bcDiscount')}</span><span class="v big green">$${fm(dm)}/${t('months')}</span></div>
+    <div class="rr"><span class="k">${t('bcSave')}</span><span class="v green">$${fm(bi-di)}</span></div>`;
 }
 
-function fm(n){if(n===0)return '0';if(Math.abs(n)<0.01)return n.toFixed(4);if(Math.abs(n)<1)return n.toFixed(2);if(Math.abs(n)<1000)return n.toFixed(2);return n.toLocaleString('en',{maximumFractionDigits:0})}
+function fm(n){if(n===0)return'0';if(Math.abs(n)<0.01)return n.toFixed(4);if(Math.abs(n)<1)return n.toFixed(2);if(Math.abs(n)<1000)return n.toFixed(2);return n.toLocaleString('en',{maximumFractionDigits:0})}
 
-/* ═══════════════════════════════════════
-   RATE CURVE VIEW (canvas)
-   ═══════════════════════════════════════ */
-function renderCurveView(){
-  document.getElementById('v-curve').innerHTML=`
-    <div class="sl">${t('curveLabel')}</div>
-    <div class="st">${t('curveTitle')}</div>
-    <div class="info-banner"><strong>◆</strong> ${t('curveInfo')}</div>
-    <p style="color:var(--text);font-size:.82rem;line-height:1.7;margin-bottom:24px;max-width:680px">${t('curveExplain')}</p>
-    <div class="curve-wrap">
-      <canvas id="curveCanvas" width="680" height="280" style="width:100%;height:280px"></canvas>
-      <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:.6rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">
-        <span>0% ${t('curveUtil')}</span>
-        <span style="color:var(--gold)">← 80% ${t('curveOptimal')} →</span>
-        <span>100%</span>
-      </div>
-      <div style="display:flex;gap:20px;margin-top:8px;font-size:.6rem">
-        <span style="color:var(--gold)">■ ${t('curveBorrow')}</span>
-        <span style="color:var(--green)">■ ${t('curveLend')}</span>
-      </div>
-    </div>
-    <div class="disc"><p>${t('disc')}</p></div>
-  `;
-}
+/* CURVE VIEW */
+function renderCurveView(){document.getElementById('v-curve').innerHTML=`
+  <div class="sl">${t('curveLabel')}</div><div class="st">${t('curveTitle')}</div>
+  <div class="info-banner"><strong>◆</strong> ${t('curveInfo')}</div>
+  <p style="color:var(--text);font-size:.82rem;line-height:1.7;margin-bottom:24px;max-width:680px">${t('curveExplain')}</p>
+  <div class="curve-wrap"><canvas id="cC" width="680" height="280" style="width:100%;height:280px"></canvas>
+  <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:.6rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase"><span>0% ${t('curveUtil')}</span><span style="color:var(--gold)">← 80% ${t('curveOptimal')} →</span><span>100%</span></div>
+  <div style="display:flex;gap:20px;margin-top:8px;font-size:.6rem"><span style="color:var(--gold)">■ ${t('curveBorrow')}</span><span style="color:var(--green)">■ ${t('curveLend')}</span></div></div>
+  <div class="disc"><p>${t('disc')}</p></div>`}
 
-function drawCurve(){
-  const canvas=document.getElementById('curveCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const w=canvas.width,h=canvas.height;
-  const pad={t:20,b:30,l:40,r:20};
-  const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+function drawCurve(){const c=document.getElementById('cC');if(!c)return;const x=c.getContext('2d'),w=c.width,h=c.height,p={t:20,b:30,l:40,r:20},cw=w-p.l-p.r,ch=h-p.t-p.b;x.clearRect(0,0,w,h);
+x.strokeStyle='#252010';x.lineWidth=0.5;for(let i=0;i<=4;i++){const y=p.t+ch*(1-i/4);x.beginPath();x.moveTo(p.l,y);x.lineTo(w-p.r,y);x.stroke();x.fillStyle='#7A6A48';x.font='10px JetBrains Mono';x.textAlign='right';x.fillText((i*16.5).toFixed(0)+'%',p.l-6,y+4)}
+const x80=p.l+cw*0.8;x.fillStyle='rgba(201,168,76,0.04)';x.fillRect(x80,p.t,cw*0.2,ch);x.strokeStyle='#C9A84C33';x.lineWidth=1;x.setLineDash([4,4]);x.beginPath();x.moveTo(x80,p.t);x.lineTo(x80,p.t+ch);x.stroke();x.setLineDash([]);
+const u=pUtil(),xu=p.l+cw*u;x.strokeStyle='#EDE3C844';x.lineWidth=1;x.setLineDash([2,4]);x.beginPath();x.moveTo(xu,p.t);x.lineTo(xu,p.t+ch);x.stroke();x.setLineDash([]);x.fillStyle='#EDE3C8';x.font='10px JetBrains Mono';x.textAlign='center';x.fillText((u*100).toFixed(0)+'%',xu,p.t+ch+14);
+const mr=0.66;function dl(fn,col){x.beginPath();x.strokeStyle=col;x.lineWidth=2;for(let i=0;i<=100;i++){const ut=i/100,r=fn(ut),px=p.l+cw*(i/100),py=p.t+ch*(1-r/mr);i===0?x.moveTo(px,py):x.lineTo(px,py)}x.stroke()}
+dl(bRate,'#C9A84C');dl(lRate,'#4CAF76');
+[['#C9A84C',bRate(u)],['#4CAF76',lRate(u)]].forEach(([c,r])=>{const px=p.l+cw*u,py=p.t+ch*(1-r/mr);x.beginPath();x.arc(px,py,5,0,Math.PI*2);x.fillStyle=c;x.fill();x.strokeStyle='#070604';x.lineWidth=2;x.stroke();x.fillStyle=c;x.font='bold 11px JetBrains Mono';x.textAlign='left';x.fillText((r*100).toFixed(1)+'%',px+10,py+4)})}
 
-  ctx.clearRect(0,0,w,h);
-
-  // Grid
-  ctx.strokeStyle='#252010';ctx.lineWidth=0.5;
-  for(let i=0;i<=4;i++){
-    const y=pad.t+ch*(1-i/4);
-    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();
-    ctx.fillStyle='#7A6A48';ctx.font='10px JetBrains Mono';ctx.textAlign='right';
-    ctx.fillText((i*16.5).toFixed(0)+'%',pad.l-6,y+4);
-  }
-
-  // Optimal zone
-  const x80=pad.l+cw*0.8;
-  ctx.fillStyle='rgba(201,168,76,0.04)';
-  ctx.fillRect(x80,pad.t,cw*0.2,ch);
-  ctx.strokeStyle='#C9A84C33';ctx.lineWidth=1;ctx.setLineDash([4,4]);
-  ctx.beginPath();ctx.moveTo(x80,pad.t);ctx.lineTo(x80,pad.t+ch);ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Current utilization line
-  const u=poolUtil();
-  const xu=pad.l+cw*u;
-  ctx.strokeStyle='#EDE3C844';ctx.lineWidth=1;ctx.setLineDash([2,4]);
-  ctx.beginPath();ctx.moveTo(xu,pad.t);ctx.lineTo(xu,pad.t+ch);ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle='#EDE3C8';ctx.font='10px JetBrains Mono';ctx.textAlign='center';
-  ctx.fillText((u*100).toFixed(0)+'%',xu,pad.t+ch+14);
-
-  // Draw curves
-  const maxRate=0.66;
-  function drawLine(fn,color){
-    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
-    for(let i=0;i<=100;i++){
-      const util=i/100;
-      const rate=fn(util);
-      const x=pad.l+cw*(i/100);
-      const y=pad.t+ch*(1-rate/maxRate);
-      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-  drawLine(getBorrowRate,'#C9A84C');
-  drawLine(getLendRate,'#4CAF76');
-
-  // Current point dots
-  const brNow=getBorrowRate(u),lrNow=getLendRate(u);
-  [['#C9A84C',brNow],['#4CAF76',lrNow]].forEach(([c,r])=>{
-    const x=pad.l+cw*u,y=pad.t+ch*(1-r/maxRate);
-    ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
-    ctx.strokeStyle='#070604';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle=c;ctx.font='bold 11px JetBrains Mono';ctx.textAlign='left';
-    ctx.fillText((r*100).toFixed(1)+'%',x+10,y+4);
-  });
-}
-
-/* ═══════════════════════════════════════
-   ABOUT
-   ═══════════════════════════════════════ */
-function renderAbout(){
-  document.getElementById('v-about').innerHTML=`
-    <div class="sl">${t('aboutLabel')}</div>
-    <div class="st">${t('aboutTitle')}</div>
-    <div class="about-text">
-      <p>${t('about1')}</p><p>${t('about2')}</p><p>${t('about3')}</p><p style="color:var(--gold)">${t('about4')}</p>
-      <div class="token-box">
-        <div><span class="k">${t('aboutToken')}</span><br/><span class="v" style="color:var(--gold)">GLDM (Gold Member)</span></div>
-        <div><span class="k">${t('aboutChain')}</span><br/><span class="v">Solana</span></div>
-        <div><span class="k">${t('aboutContract')}</span><br/><span class="v" style="font-size:.6rem;word-break:break-all">3kcw4yq9pAqFWEfiN5727CzdxJwra6tnywttatcxzpkm</span></div>
-        <div><span class="k">${t('aboutDex')}</span><br/><a href="https://dexscreener.com/solana/3kcw4yq9paqfwefin5727czdxjwra6tnywttatcxzpkm" target="_blank">Ver en DexScreener →</a></div>
-      </div>
-    </div>
-    <div class="disc"><p>${t('disc')}</p></div>
-  `;
-}
+/* ABOUT */
+function renderAbout(){document.getElementById('v-about').innerHTML=`
+  <div class="sl">${t('aboutLabel')}</div><div class="st">${t('aboutTitle')}</div>
+  <div class="about-text"><p>${t('about1')}</p><p>${t('about2')}</p><p>${t('about3')}</p><p style="color:var(--gold)">${t('about4')}</p>
+  <div class="token-box">
+    <div><span class="k">${t('aboutToken')}</span><br/><span class="v" style="color:var(--gold)">GLDM (Gold Member)</span></div>
+    <div><span class="k">${t('aboutChain')}</span><br/><span class="v">Solana</span></div>
+    <div><span class="k">${t('aboutContract')}</span><br/><span class="v" style="font-size:.6rem;word-break:break-all">3kcw4yq9pAqFWEfiN5727CzdxJwra6tnywttatcxzpkm</span></div>
+    <div><span class="k">${t('aboutDex')}</span><br/><a href="https://dexscreener.com/solana/3kcw4yq9paqfwefin5727czdxjwra6tnywttatcxzpkm" target="_blank">Ver en DexScreener →</a></div>
+  </div></div><div class="disc"><p>${t('disc')}</p></div>`}
 
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)}
 
-/* INIT */
-const sv=localStorage.getItem('gldm-lang');
-if(sv)L=sv;else if(navigator.language?.startsWith('es'))L='es';
-document.getElementById('lEN').classList.toggle('active',L==='en');
-document.getElementById('lES').classList.toggle('active',L==='es');
-renderAll();
+const sv=localStorage.getItem('gldm-lang');if(sv)L=sv;else if(navigator.language?.startsWith('es'))L='es';
+document.getElementById('lEN').classList.toggle('active',L==='en');document.getElementById('lES').classList.toggle('active',L==='es');renderAll();
 </script>
 </body>
 </html>
