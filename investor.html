@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GLDM — Portal de Inversores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#070604;--deep:#0D0A05;--surface:#141008;--border:#252010;--border-light:#3a3018;--gold:#C9A84C;--gold-bright:#F0C84A;--gold-dim:#8a7434;--gold-glow:rgba(201,168,76,0.08);--cream:#EDE3C8;--muted:#7A6A48;--text:#C8B888;--green:#4CAF76;--red:#CF4444;--fd:'Cormorant Garamond',Georgia,serif;--fm:'JetBrains Mono','Courier New',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--black);color:var(--cream);font-family:var(--fm);font-size:13px;font-weight:300;line-height:1.7;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::selection{background:var(--gold);color:var(--black)}
+a{color:var(--gold);text-decoration:none}
+#gate{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+#gate.hidden{display:none}
+.gate-box{text-align:center;max-width:400px;width:100%}
+.gate-logo{font-family:var(--fd);font-size:2.4rem;font-weight:300;color:var(--cream);letter-spacing:.08em;margin-bottom:8px}
+.gate-logo em{font-style:italic;color:var(--gold);font-size:.7em}
+.gate-sub{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:40px}
+.gate-input{width:100%;background:var(--surface);border:1px solid var(--border);padding:14px 20px;font-family:var(--fm);font-size:1.1rem;color:var(--cream);text-align:center;letter-spacing:.3em;outline:none;margin-bottom:16px}
+.gate-input:focus{border-color:var(--gold-dim)}
+.gate-input::placeholder{color:var(--muted);letter-spacing:.1em;font-size:.8rem}
+.gate-btn{width:100%;padding:12px;border:1px solid var(--gold);background:var(--gold-glow);color:var(--gold);font-family:var(--fm);font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.gate-btn:hover{background:var(--gold);color:var(--black)}
+.gate-error{color:var(--red);font-size:.7rem;margin-top:12px;display:none}
+#portal{display:none;max-width:860px;margin:0 auto;padding:0 20px 80px}
+#portal.visible{display:block}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid var(--border);margin-bottom:40px;position:sticky;top:0;background:rgba(7,6,4,0.95);backdrop-filter:blur(12px);z-index:100}
+.logo{font-family:var(--fd);font-size:1.5rem;font-weight:300;color:var(--cream);letter-spacing:.08em}
+.logo em{font-style:italic;color:var(--gold);font-size:.7em}
+.tr{display:flex;align-items:center;gap:10px}
+.badge{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--gold);color:var(--gold)}
+.lang-toggle{display:flex;border:1px solid var(--border);height:30px}
+.lang-btn{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.06em;padding:0 12px;border:none;background:transparent;color:var(--muted);cursor:pointer;text-transform:uppercase}
+.lang-btn:first-child{border-right:1px solid var(--border)}
+.lang-btn.active{background:var(--gold-glow);color:var(--gold)}
+.section{margin-bottom:60px}
+.sl{font-family:var(--fm);font-size:.58rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px}
+.st{font-family:var(--fd);font-size:1.7rem;font-weight:300;color:var(--cream);margin-bottom:8px;line-height:1.2}
+.st em{font-style:italic;color:var(--gold)}
+.intro{color:var(--text);font-size:.82rem;line-height:1.7;margin-bottom:24px;max-width:700px}
+.diagram{background:var(--deep);border:1px solid var(--border);padding:24px;margin:20px 0;font-family:var(--fm);font-size:.72rem;line-height:1.8;color:var(--text);overflow-x:auto;white-space:pre;letter-spacing:.02em}
+.highlight{border-left:3px solid var(--gold);background:var(--gold-glow);padding:16px 20px;margin:16px 0;font-size:.78rem;color:var(--text);line-height:1.6}
+.highlight strong{color:var(--gold)}
+.highlight.green-hl{border-color:var(--green);background:rgba(76,175,118,0.05)}
+.highlight.green-hl strong{color:var(--green)}
+.phase{background:var(--deep);border:1px solid var(--border);margin-bottom:16px;overflow:hidden}
+.phase-header{display:flex;align-items:center;gap:14px;padding:18px 24px;border-bottom:1px solid var(--border);cursor:pointer}
+.phase-header:hover{background:var(--surface)}
+.phase-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:600;border:1px solid var(--gold);color:var(--gold);flex-shrink:0}
+.phase-num.done{background:var(--green);border-color:var(--green);color:var(--black)}
+.phase-info{flex:1}
+.phase-title{font-size:.82rem;font-weight:500;color:var(--cream);margin-bottom:2px}
+.phase-meta{display:flex;gap:16px;font-size:.6rem;color:var(--muted)}
+.phase-status{padding:2px 8px;font-size:.52rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid}
+.phase-status.done{border-color:var(--green);color:var(--green)}
+.phase-status.now{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.phase-status.next{border-color:var(--muted);color:var(--muted)}
+.phase-body{padding:20px 24px;font-size:.78rem;color:var(--text);line-height:1.7;display:none}
+.phase-body.open{display:block;animation:fu .3s ease}
+.phase-body p{margin-bottom:12px}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.num-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.num-card{background:var(--deep);border:1px solid var(--border);padding:16px 18px}
+.num-label{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.num-val{font-family:var(--fm);font-size:1.2rem;font-weight:500;color:var(--cream)}
+.num-val.green{color:var(--green)}.num-val.gold{color:var(--gold)}
+.num-note{font-size:.6rem;color:var(--muted);margin-top:4px}
+.sc-row{display:grid;grid-template-columns:120px 1fr;gap:0;border:1px solid var(--border);margin-bottom:8px}
+.sc-label{background:var(--deep);padding:12px 16px;font-size:.68rem;font-weight:500;color:var(--gold);display:flex;align-items:center;border-right:1px solid var(--border)}
+.sc-val{padding:12px 16px;font-size:.75rem;color:var(--text)}
+.risk-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.risk-item:last-child{border-bottom:none}
+.risk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.risk-dot.low{background:var(--green)}.risk-dot.med{background:var(--gold)}
+.risk-text{font-size:.75rem;color:var(--text);flex:1}
+.risk-mit{font-size:.65rem;color:var(--muted);max-width:240px;text-align:right}
+.footer{border-top:1px solid var(--border);padding:24px 0;text-align:center}
+.footer p{font-size:.58rem;color:var(--muted);max-width:600px;margin:0 auto 4px;line-height:1.6}
+@media(max-width:600px){.num-grid{grid-template-columns:1fr}.sc-row{grid-template-columns:90px 1fr}.topbar{flex-direction:column;gap:8px;text-align:center}.risk-item{flex-wrap:wrap}.risk-mit{max-width:100%;text-align:left;margin-top:4px}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">GLDM <em>Lending</em></div>
+    <div class="gate-sub" id="gateSub">Portal de Inversores</div>
+    <input class="gate-input" id="pw" type="password" placeholder="Código de acceso" onkeydown="if(event.key==='Enter')checkPw()" autofocus/>
+    <button class="gate-btn" id="gateBtn" onclick="checkPw()">Entrar</button>
+    <div class="gate-error" id="pwErr">Código incorrecto.</div>
+  </div>
+</div>
+
+<div id="portal">
+  <div class="topbar">
+    <div class="logo">GLDM <em id="portalLabel">Portal de Inversores</em></div>
+    <div class="tr">
+      <div class="lang-toggle">
+        <button class="lang-btn" id="lEN" onclick="setL('en')">EN</button>
+        <button class="lang-btn active" id="lES" onclick="setL('es')">ES</button>
+      </div>
+      <div class="badge" id="confBadge">Confidencial</div>
+    </div>
+  </div>
+  <div id="content"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   i18n — Complete bilingual content
+   ════════════════════════════════════════════════ */
+const I={
+es:{
+portalLabel:'Portal de Inversores',
+confBadge:'Confidencial',
+gateSub:'Portal de Inversores',
+gatePlaceholder:'Código de acceso',
+gateBtn:'Entrar',
+gateErr:'Código incorrecto.',
+
+s1l:'Lo Básico',s1t:'Qué Es GLDM Lending — <em>En Palabras Simples</em>',
+s1intro:'GLDM Lending es una plataforma online donde las personas se prestan dinero entre sí usando criptomonedas. No hay banco en el medio. Un programa de computadora (llamado contrato inteligente) maneja todo automáticamente. Pensá en ello como una máquina expendedora de préstamos — la máquina guarda el dinero, aplica las reglas, y nadie puede hacer trampa.',
+
+dia1:`<span class="cream">CÓMO FUNCIONA — EL PANORAMA GENERAL</span>
+
+<span class="muted">Hay dos lados:</span>
+
+<span class="green">  PRESTAMISTAS (tienen dinero)           PRESTATARIOS (necesitan dinero)</span>
+<span class="green">  ┌─────────────────────┐</span>              <span class="gold">┌─────────────────────┐</span>
+<span class="green">  │                     │</span>              <span class="gold">│                     │</span>
+<span class="green">  │  "Tengo $5,000      │</span>              <span class="gold">│  "Tengo 2 SOL y     │</span>
+<span class="green">  │   que no están      │</span>  ────────▶   <span class="gold">│   necesito $150     │</span>
+<span class="green">  │   haciendo nada.    │</span>  <span class="cream">  DINERO  </span>   <span class="gold">│   sin vender mi     │</span>
+<span class="green">  │   Quiero ganar      │</span>  ◀────────   <span class="gold">│   crypto."          │</span>
+<span class="green">  │   intereses."       │</span>  <span class="cream">INTERESES</span>   <span class="gold">│                     │</span>
+<span class="green">  └─────────────────────┘</span>              <span class="gold">└─────────────────────┘</span>
+
+<span class="muted">En el medio:</span>
+
+              <span class="cream">┌─────────────────────────────┐</span>
+              <span class="cream">│   CONTRATO INTELIGENTE GLDM │</span>
+              <span class="cream">│                             │</span>
+              <span class="cream">│  ◆ Guarda el dinero seguro  │</span>
+              <span class="cream">│  ◆ Calcula los intereses    │</span>
+              <span class="cream">│  ◆ Retiene el colateral     │</span>
+              <span class="cream">│  ◆ Liquida si es necesario  │</span>
+              <span class="cream">│  ◆ Nadie puede cambiar las  │</span>
+              <span class="cream">│    reglas                   │</span>
+              <span class="cream">└─────────────────────────────┘</span>`,
+
+hl1:'<strong>La regla clave:</strong> Cada prestatario debe depositar colateral que vale MÁS de lo que pide prestado. Si alguien pide $100, primero bloquea $133+ en crypto. Si no paga, el contrato inteligente automáticamente vende su colateral para devolver el dinero al prestamista. El prestamista siempre está protegido.',
+
+s2l:'La Oportunidad',s2t:'Por Qué Funciona <em>Ahora</em>',
+
+dia2:`<span class="cream">EL PROBLEMA EN LATINOAMÉRICA</span>
+
+<span class="gold">  Préstamo Bancario (Bolivia)            GLDM Lending</span>
+  ─────────────────────────────        ─────────────────
+<span class="red">  ✗ 15-25% de interés anual</span>             <span class="green">✓ 3-8% de interés anual</span>
+<span class="red">  ✗ Requiere historial crediticio</span>       <span class="green">✓ Sin verificación crediticia</span>
+<span class="red">  ✗ Días o semanas para aprobar</span>         <span class="green">✓ Instantáneo (10 segundos)</span>
+<span class="red">  ✗ Papeleo, visitas a oficinas</span>         <span class="green">✓ Desde tu celular</span>
+<span class="red">  ✗ Bancos rechazan a la mayoría</span>        <span class="green">✓ Cualquiera con crypto puede usarlo</span>
+<span class="red">  ✗ Escasez de dólares en Bolivia</span>        <span class="green">✓ Funciona con USDC (dólar digital)</span>`,
+
+hl2:'<strong>Contexto Bolivia:</strong> En junio 2024, Bolivia revirtió su prohibición de crypto. Para 2026, bancos como BISA y Banco de Crédito ofrecen cuentas en USDT. Toyota, Yamaha y BYD aceptan Tether para compra de vehículos. El volumen de transacciones crypto pasó de $46M a $430M en un año. El mercado está listo.',
+
+s3l:'Protección del Inversor',s3t:'Cómo Está <em>Protegido</em> Tu Dinero',
+
+dia3:`<span class="cream">EJEMPLO: QUÉ PASA CON TUS $5,000</span>
+
+<span class="green">  Depositás $5,000 USDC en el pool de GLDM</span>
+          │
+          ▼
+  ┌───────────────────────────────────────────┐
+  │           POOL DE PRÉSTAMOS GLDM          │
+  │                                           │
+  │  Tus $5,000 + dinero de otros             │
+  │  prestamistas están en un contrato        │
+  │  inteligente en Solana. Nadie puede       │
+  │  tocarlo excepto el código.               │
+  └───────────────────────────────────────────┘
+          │
+          ▼
+<span class="gold">  Juan quiere pedir prestado $1,000 del pool</span>
+          │
+          ▼
+  ┌───────────────────────────────────────────┐
+  │  <span class="red">ANTES de poder pedir prestado, Juan</span>       │
+  │  <span class="red">DEBE depositar $1,333 en SOL como</span>        │
+  │  <span class="red">colateral.</span>                                │
+  │                                           │
+  │  Su SOL queda bloqueado en el contrato.   │
+  │  No puede retirarlo hasta que pague.      │
+  └───────────────────────────────────────────┘
+          │
+          ▼
+<span class="cream">  DOS POSIBLES RESULTADOS:</span>
+
+  <span class="green">Resultado A: Juan paga</span>             <span class="gold">Resultado B: Juan NO paga</span>
+  <span class="green">──────────────────────</span>             <span class="gold">──────────────────────────</span>
+  <span class="green">Juan devuelve $1,000</span>               <span class="gold">El contrato inteligente</span>
+  <span class="green">+ intereses ($40-80).</span>              <span class="gold">automáticamente vende el</span>
+  <span class="green">Recupera su SOL.</span>                   <span class="gold">SOL de Juan ($1,333) para</span>
+  <span class="green">Vos ganaste intereses.</span>             <span class="gold">pagarte + un bono del 5%.</span>
+  <span class="green">Todos ganan.</span>                       <span class="gold">IGUAL te pagan.</span>`,
+
+hl3:'<strong>Conclusión:</strong> En ambos resultados, recuperás tu dinero. O el prestatario paga con intereses (ganás), o su colateral se vende automáticamente para pagarte (igual ganás). El único riesgo es un bug en el código del contrato — por eso hacemos una auditoría de seguridad profesional antes de lanzar.',
+
+s4l:'Los Números',s4t:'Cuánto <em>Ganás</em>',
+s4intro:'La tasa de interés no la decide nadie. Se calcula automáticamente según cuánto del pool está siendo prestado. Más prestatarios = tasas más altas para vos.',
+
+dia4:`<span class="cream">TUS GANANCIAS CON UN DEPÓSITO DE $5,000</span>
+
+<span class="muted">  Actividad del pool     Tu tasa anual       Ganás por año</span>
+  ───────────────────   ────────────────    ─────────────────
+<span class="muted">  Baja demanda  (20%)</span>    1.0% APY            <span class="green">+$50</span>
+<span class="muted">  Normal        (40%)</span>    1.9% APY            <span class="green">+$96</span>
+<span class="muted">  Buena         (60%)</span>    3.8% APY            <span class="green">+$192</span>
+<span class="gold">  Óptima        (80%)</span>    <span class="gold">7.7% APY</span>            <span class="gold">+$384</span>
+<span class="red">  Alta demanda  (90%)</span>    <span class="cream">14.4% APY</span>           <span class="cream">+$720</span>
+
+<span class="muted">  Cómo funciona la curva:</span>
+<span class="muted">  0%          20%         40%         60%         80%    90%   100%</span>
+<span class="muted">  │───────────│───────────│───────────│───────────│──────│──────│</span>
+  <span class="green">  subida suave ─────────────────────────────────▶</span><span class="gold">│</span><span class="red">sube fuerte▶│</span>
+<span class="muted">                                                 │             │</span>
+<span class="muted">                                           zona óptima   máximo</span>`,
+
+n1l:'Estimación conservadora (40% utilización)',n1v:'+$96 / año',n1n:'$8/mes sobre $5,000 depositados',
+n2l:'Estimación objetivo (60% utilización)',n2v:'+$192 / año',n2n:'$16/mes sobre $5,000 depositados',
+n3l:'Estimación optimista (80% utilización)',n3v:'+$384 / año',n3n:'$32/mes sobre $5,000 depositados',
+n4l:'Ingreso del protocolo (tu 20% de comisión)',n4v:'$19 - $96 / año',n4n:'Del 20% que el protocolo cobra sobre todo el interés',
+
+hl4:'<strong>Cómo se fijan las tasas:</strong> Nadie decide la tasa. Una fórmula matemática la calcula automáticamente según la oferta y la demanda. Es el mismo sistema usado por Aave ($10B+ en depósitos), Compound, Kamino y Save — los protocolos de préstamos más grandes del mundo. Está probado y funciona.',
+
+s5l:'El Plan',s5t:'Hoja de Ruta — <em>4 Fases</em>',s5intro:'Hacé click en cada fase para ver los detalles. Estamos en la Fase 1.',
+
+p1t:'Prototipo — Construir el Producto Visible',p1m1:'Costo: $0',p1m2:'Tiempo: 2 semanas',p1s:'Completa',
+p1b:'<p><strong>Lo que construimos:</strong> Un sitio web funcional con precios de criptomonedas en vivo, calculadoras de préstamos, modelo de tasas dinámicas, soporte bilingüe (EN/ES), conexión con billetera Phantom, y guía paso a paso.</p><p><strong>Lo que demuestra:</strong> El concepto funciona. El modelo económico es sólido. La interfaz es profesional.</p>',
+
+p2t:'Legal y Cumplimiento — Hacerlo Legítimo',p2m1:'Costo: $1,000 - $2,500',p2m2:'Tiempo: 4 semanas',p2s:'Actual',
+p2b:'<p><strong>Por qué importa:</strong> Bolivia revirtió su prohibición de crypto en 2024. Los bancos ofrecen cuentas USDT. Pero hay que cumplir con las regulaciones.</p><p><strong>Qué se hace:</strong> Términos de servicio, política de privacidad, disclaimer del token GLDM, consulta con abogado boliviano sobre registro VASP con ASFI, consulta con abogado crypto en EEUU, implementación básica de KYC, límites de transacción para usuarios nuevos.</p>',
+
+p3t:'Contrato Inteligente y Auditoría — Construir el Motor',p3m1:'Costo: $2,000 - $8,000',p3m2:'Tiempo: 6 semanas',p3s:'Siguiente',
+p3b:'<p><strong>Qué es:</strong> El contrato inteligente es el programa que corre en la blockchain de Solana. Guarda el dinero, calcula intereses, maneja el colateral y ejecuta liquidaciones. Es la máquina expendedora que nadie puede manipular.</p><p><strong>El proceso:</strong> Escribir el código → Desplegarlo en red de prueba → Auditoría de seguridad profesional → Publicar el reporte de auditoría. No lanzamos con dinero real hasta que la auditoría esté completa.</p>',
+
+p4t:'Lanzamiento en Mainnet — Dinero Real',p4m1:'Costo: $3,000 - $10,000 (liquidez inicial)',p4m2:'Tiempo: 1 semana',p4s:'Siguiente',
+p4b:'<p><strong>Acá es donde tu inversión empieza a trabajar.</strong></p><p>Se despliega el contrato auditado en Solana mainnet. Se deposita la liquidez inicial ($5,000 USDC). Se ejecuta el primer préstamo real. Se anuncia a la comunidad GLDM (1,247 holders existentes con 15% mejor tasa). Se apunta a usuarios de Binance en Latinoamérica (10M+ usuarios).</p><p><strong>La liquidez inicial NO es un gasto — es un depósito que gana intereses y se puede retirar en cualquier momento.</strong></p>',
+
+s6l:'Resumen de Inversión',s6t:'Capital Total <em>Necesario</em>',
+
+dia6:`<span class="cream">DÓNDE VA TU DINERO</span>
+
+  <span class="gold">  ┌──────────────────────────────────────────────────────┐</span>
+  <span class="gold">  │                                                      │</span>
+  <span class="gold">  │   LANZAMIENTO MÍNIMO VIABLE         ~$6,500          │</span>
+  <span class="gold">  │                                                      │</span>
+  <span class="gold">  │   Documentos legales + abogados      $1,000 - $2,500 │</span>
+  <span class="gold">  │   Auditoría del contrato              $2,000 - $5,000 │</span>
+  <span class="gold">  │   Fondo de recompensas por bugs       $500            │</span>
+  <span class="gold">  │   Despliegue en Solana                $50             │</span>
+  <span class="gold">  │   Liquidez inicial del pool           $3,000 - $10,000│</span>
+  <span class="gold">  │                                      ──────────────  │</span>
+  <span class="gold">  │                                       $6,550 - $18,050│</span>
+  <span class="gold">  └──────────────────────────────────────────────────────┘</span>
+
+  <span class="green">  NOTA: La liquidez inicial ($3,000 - $10,000) NO es un</span>
+  <span class="green">  costo. Es un depósito que GANA intereses y se puede</span>
+  <span class="green">  retirar. Solo ~$3,500 son gastos reales (legal + auditoría).</span>`,
+
+n5l:'Costo real no recuperable',n5v:'~$3,500',n5n:'Legal, auditoría, despliegue, bug bounty',
+n6l:'Depósito recuperable (gana intereses)',n6v:'$3,000 - $10,000',n6n:'Liquidez inicial — retirá cuando quieras',
+
+s7l:'Transparencia',s7t:'Riesgos — <em>Evaluación Honesta</em>',s7intro:'Creemos en la transparencia total. Estos son los riesgos reales y cómo los mitigamos.',
+r1t:'<strong>Bug en el contrato</strong> — un error en el código podría permitir pérdida de fondos',r1m:'Mitigado por: auditoría profesional + bug bounty + empezar con montos pequeños',
+r2t:'<strong>Baja demanda</strong> — si nadie pide prestado, las tasas son cercanas a cero',r2m:'Mitigado por: 10M+ usuarios de Binance en LATAM que ya tienen crypto',
+r3t:'<strong>Caída del precio de SOL</strong> — caída rápida podría causar liquidaciones en cascada',r3m:'Mitigado por: LTV conservador 75% + bono de liquidación del 5%',
+r4t:'<strong>Cambio regulatorio</strong> — Bolivia podría revertir su postura sobre crypto',r4m:'Mitigado por: entidad en EEUU (Wyoming LLC) + tendencia fuertemente hacia adopción',
+r5t:'<strong>Manipulación de oráculos</strong> — datos de precios falsos podrían causar liquidaciones incorrectas',r5m:'Mitigado por: Pyth Network (oráculo descentralizado usado por todos los protocolos principales de Solana)',
+hlRisk:'<strong>Lo que NO es un riesgo:</strong> Que los prestatarios se escapen con el dinero. Esto es imposible por diseño. El contrato inteligente retiene su colateral (vale 133%+ del préstamo). Físicamente no pueden retirar el colateral sin pagar primero. El código lo impone — no una persona, no un banco, no una promesa. Código.',
+
+s8l:'Cronograma',s8t:'90 Días a <em>Mainnet</em>',
+dia8:`<span class="cream">  PLAN SEMANA POR SEMANA</span>
+
+  <span class="gold">  Semana 1-2</span>    Documentos legales + abogado boliviano
+  <span class="gold">  Semana 3-4</span>    Abogado crypto EEUU + cumplimiento fiscal
+  <span class="gold">  Semana 5-8</span>    Construir contratos inteligentes (Anchor/Rust)
+  <span class="gold">  Semana 9-10</span>   Conectar frontend a red de prueba
+  <span class="gold">  Semana 11-12</span>  Auditoría de seguridad
+  <span class="green">  Semana 13</span>     <span class="green">◆ LANZAMIENTO — tu dinero empieza a ganar</span>`,
+
+s9l:'El Equipo',s9t:'Quiénes <em>Están Detrás</em>',
+hlTeam:'<strong>GLDM es más que DeFi.</strong> Es una membresía comunitaria que también da acceso a 12 historias originales de cine, contenido educativo, votación de gobernanza, y el pipeline de IP de Cinematic Ideas. Los holders reciben 15% mejor tasa en préstamos. Esta capa comunitaria es lo que diferencia a GLDM de todos los demás protocolos — no solo ganás intereses, sos parte de una comunidad creativa.',
+f1:'Este documento es confidencial y está destinado a posibles inversores del Protocolo GLDM Lending.',
+f2:'GLDM es un token de membresía comunitaria, no un valor financiero. No se garantizan retornos. Toda inversión conlleva riesgo. El depósito de liquidez inicial gana intereses pero está sujeto a riesgo del contrato inteligente. Consultá a tus propios asesores financieros y legales antes de invertir.',
+f3:'Cinematic Ideas Corporation — Dearborn Ventures LLC — Abril 2026',
+backToApp:'← Volver a la app principal',
+},
+
+en:{
+portalLabel:'Investor Portal',
+confBadge:'Confidential',
+gateSub:'Investor Portal',
+gatePlaceholder:'Enter access code',
+gateBtn:'Enter',
+gateErr:'Incorrect code.',
+
+s1l:'The Basics',s1t:'What Is GLDM Lending — <em>In Simple Terms</em>',
+s1intro:'GLDM Lending is an online platform where people lend money to each other using cryptocurrency. There is no bank in the middle. A computer program (called a smart contract) handles everything automatically. Think of it like a vending machine for loans — the machine holds the money, enforces the rules, and nobody can cheat.',
+
+dia1:`<span class="cream">HOW IT WORKS — THE BIG PICTURE</span>
+
+<span class="muted">There are two sides:</span>
+
+<span class="green">  LENDERS (people with money)          BORROWERS (people who need money)</span>
+<span class="green">  ┌─────────────────────┐</span>              <span class="gold">┌─────────────────────┐</span>
+<span class="green">  │                     │</span>              <span class="gold">│                     │</span>
+<span class="green">  │  "I have $5,000     │</span>              <span class="gold">│  "I have 2 SOL and  │</span>
+<span class="green">  │   sitting around.   │</span>  ────────▶   <span class="gold">│   I need $150 cash  │</span>
+<span class="green">  │   I want it to      │</span>  <span class="cream">  MONEY  </span>   <span class="gold">│   without selling   │</span>
+<span class="green">  │   earn interest."   │</span>  ◀────────   <span class="gold">│   my crypto."       │</span>
+<span class="green">  │                     │</span>  <span class="cream">INTEREST</span>   <span class="gold">│                     │</span>
+<span class="green">  └─────────────────────┘</span>              <span class="gold">└─────────────────────┘</span>
+
+<span class="muted">In the middle:</span>
+
+              <span class="cream">┌─────────────────────────────┐</span>
+              <span class="cream">│     GLDM SMART CONTRACT     │</span>
+              <span class="cream">│                             │</span>
+              <span class="cream">│  ◆ Holds the money safely   │</span>
+              <span class="cream">│  ◆ Calculates interest      │</span>
+              <span class="cream">│  ◆ Holds the collateral     │</span>
+              <span class="cream">│  ◆ Liquidates if needed     │</span>
+              <span class="cream">│  ◆ Nobody can change rules  │</span>
+              <span class="cream">└─────────────────────────────┘</span>`,
+
+hl1:'<strong>The key rule:</strong> Every borrower must deposit collateral worth MORE than what they borrow. If someone borrows $100, they first lock up $133+ of crypto. If they don\'t repay, the smart contract automatically sells their collateral to pay back the lender. The lender is always protected.',
+
+s2l:'The Opportunity',s2t:'Why This Works <em>Right Now</em>',
+
+dia2:`<span class="cream">THE PROBLEM IN LATIN AMERICA</span>
+
+<span class="gold">  Traditional Bank Loan (Bolivia)        GLDM Lending</span>
+  ─────────────────────────────        ─────────────────
+<span class="red">  ✗ 15-25% annual interest</span>              <span class="green">✓ 3-8% annual interest</span>
+<span class="red">  ✗ Requires credit history</span>             <span class="green">✓ No credit check needed</span>
+<span class="red">  ✗ Days or weeks to approve</span>            <span class="green">✓ Instant (10 seconds)</span>
+<span class="red">  ✗ Paperwork, office visits</span>            <span class="green">✓ From your phone</span>
+<span class="red">  ✗ Banks reject most people</span>            <span class="green">✓ Anyone with crypto can use it</span>
+<span class="red">  ✗ Dollar shortage in Bolivia</span>           <span class="green">✓ Works with USDC (digital dollar)</span>`,
+
+hl2:'<strong>Bolivia context:</strong> In June 2024, Bolivia reversed its crypto ban. By 2026, banks like BISA and Banco de Credito offer USDT accounts. Toyota, Yamaha, and BYD accept Tether for vehicle purchases. Crypto transaction volume went from $46M to $430M in one year. The market is ready.',
+
+s3l:'Investor Protection',s3t:'How Your Money Is <em>Protected</em>',
+
+dia3:`<span class="cream">EXAMPLE: WHAT HAPPENS WITH YOUR $5,000</span>
+
+<span class="green">  You deposit $5,000 USDC into the GLDM lending pool</span>
+          │
+          ▼
+  ┌───────────────────────────────────────────┐
+  │           GLDM LENDING POOL               │
+  │                                           │
+  │  Your $5,000 + other lenders' money       │
+  │  sits in a smart contract on Solana       │
+  │  blockchain. Nobody can touch it           │
+  │  except the code.                         │
+  └───────────────────────────────────────────┘
+          │
+          ▼
+<span class="gold">  Juan wants to borrow $1,000 from the pool</span>
+          │
+          ▼
+  ┌───────────────────────────────────────────┐
+  │  <span class="red">BEFORE he can borrow, Juan MUST lock up</span>   │
+  │  <span class="red">$1,333 worth of SOL as collateral.</span>        │
+  │                                           │
+  │  His SOL is locked in the smart contract. │
+  │  He cannot withdraw it until he repays.   │
+  └───────────────────────────────────────────┘
+          │
+          ▼
+<span class="cream">  TWO POSSIBLE OUTCOMES:</span>
+
+  <span class="green">Outcome A: Juan repays</span>               <span class="gold">Outcome B: Juan doesn't repay</span>
+  <span class="green">─────────────────────</span>               <span class="gold">──────────────────────────</span>
+  <span class="green">Juan pays back $1,000</span>               <span class="gold">The smart contract</span>
+  <span class="green">+ interest ($40-80).</span>                <span class="gold">automatically sells Juan's</span>
+  <span class="green">He gets his SOL back.</span>               <span class="gold">$1,333 of SOL to pay you</span>
+  <span class="green">You earned interest.</span>                <span class="gold">back + a 5% bonus.</span>
+  <span class="green">Everyone wins.</span>                      <span class="gold">You STILL get paid.</span>`,
+
+hl3:'<strong>Bottom line:</strong> In both outcomes, you get your money back. Either the borrower repays with interest (you profit), or their collateral is sold automatically to repay you (you still profit). The only risk is a bug in the smart contract code — which is why we get a professional security audit before launching.',
+
+s4l:'The Numbers',s4t:'What You <em>Earn</em>',
+s4intro:'The interest rate is not set by anyone. It is calculated automatically based on how much of the pool is being borrowed. More borrowers = higher rates for you.',
+
+dia4:`<span class="cream">YOUR EARNINGS ON A $5,000 DEPOSIT</span>
+
+<span class="muted">  Pool activity         Your annual rate    You earn per year</span>
+  ──────────────────   ────────────────    ─────────────────
+<span class="muted">  Low demand  (20%)</span>     1.0% APY            <span class="green">+$50</span>
+<span class="muted">  Normal      (40%)</span>     1.9% APY            <span class="green">+$96</span>
+<span class="muted">  Good        (60%)</span>     3.8% APY            <span class="green">+$192</span>
+<span class="gold">  Optimal     (80%)</span>     <span class="gold">7.7% APY</span>            <span class="gold">+$384</span>
+<span class="red">  High demand (90%)</span>     <span class="cream">14.4% APY</span>           <span class="cream">+$720</span>
+
+<span class="muted">  How the curve works:</span>
+<span class="muted">  0%          20%         40%         60%         80%    90%   100%</span>
+<span class="muted">  │───────────│───────────│───────────│───────────│──────│──────│</span>
+  <span class="green">  gentle rise ─────────────────────────────────▶</span><span class="gold">│</span><span class="red">sharp spike▶│</span>
+<span class="muted">                                                 │             │</span>
+<span class="muted">                                           optimal zone    maximum</span>`,
+
+n1l:'Conservative estimate (40% utilization)',n1v:'+$96 / year',n1n:'$8/month on $5,000 deposited',
+n2l:'Target estimate (60% utilization)',n2v:'+$192 / year',n2n:'$16/month on $5,000 deposited',
+n3l:'Optimistic estimate (80% utilization)',n3v:'+$384 / year',n3n:'$32/month on $5,000 deposited',
+n4l:'Protocol revenue (your 20% fee share)',n4v:'$19 - $96 / year',n4n:'From the 20% protocol fee on all interest',
+
+hl4:'<strong>How interest rates are set:</strong> Nobody decides the rate. A mathematical formula calculates it automatically based on supply and demand. This is the exact same system used by Aave ($10B+ TVL), Compound, Kamino, and Save — the biggest lending protocols in the world. Proven and battle-tested.',
+
+s5l:'The Plan',s5t:'Roadmap — <em>4 Phases</em>',s5intro:'Click each phase to see details. We are currently in Phase 1.',
+
+p1t:'Prototype — Build the Visible Product',p1m1:'Cost: $0',p1m2:'Time: 2 weeks',p1s:'Complete',
+p1b:'<p><strong>What we built:</strong> A fully functional website with live crypto prices, lending and borrowing calculators, dynamic rate model, bilingual EN/ES, Phantom wallet connection, and step-by-step onboarding guide.</p><p><strong>What it proves:</strong> The product concept works. The economic model is sound. The interface is professional.</p>',
+
+p2t:'Legal & Compliance — Make It Legitimate',p2m1:'Cost: $1,000 - $2,500',p2m2:'Time: 4 weeks',p2s:'Current',
+p2b:'<p><strong>Why it matters:</strong> Bolivia reversed its crypto ban in 2024. Banks offer USDT accounts. But regulations must be followed.</p><p><strong>What gets done:</strong> Terms of service, privacy policy, GLDM token disclaimer, Bolivian lawyer consultation on ASFI/VASP registration, US crypto lawyer consultation, basic KYC implementation, transaction limits for new users.</p>',
+
+p3t:'Smart Contract & Audit — Build the Engine',p3m1:'Cost: $2,000 - $8,000',p3m2:'Time: 6 weeks',p3s:'Next',
+p3b:'<p><strong>What this is:</strong> The smart contract is the program that runs on Solana blockchain. It holds money, calculates interest, manages collateral, and executes liquidations. It\'s the vending machine nobody can tamper with.</p><p><strong>Process:</strong> Write code → Deploy to test network → Professional security audit → Publish audit report. We do not launch with real money until the audit is complete.</p>',
+
+p4t:'Mainnet Launch — Real Money',p4m1:'Cost: $3,000 - $10,000 (seed liquidity)',p4m2:'Time: 1 week',p4s:'Next',
+p4b:'<p><strong>This is where your investment starts working.</strong></p><p>Deploy audited contract to Solana mainnet. Deposit seed liquidity ($5,000 USDC). Execute first real loan. Announce to GLDM community (1,247 existing holders with 15% better rates). Target Binance users in Latin America (10M+ users).</p><p><strong>The seed liquidity is NOT an expense — it is a deposit that earns interest and can be withdrawn anytime.</strong></p>',
+
+s6l:'Investment Summary',s6t:'Total Capital <em>Required</em>',
+
+dia6:`<span class="cream">WHERE YOUR MONEY GOES</span>
+
+  <span class="gold">  ┌──────────────────────────────────────────────────────┐</span>
+  <span class="gold">  │                                                      │</span>
+  <span class="gold">  │   MINIMUM VIABLE LAUNCH          ~$6,500             │</span>
+  <span class="gold">  │                                                      │</span>
+  <span class="gold">  │   Legal documents + lawyers       $1,000 - $2,500    │</span>
+  <span class="gold">  │   Smart contract audit             $2,000 - $5,000    │</span>
+  <span class="gold">  │   Bug bounty fund                  $500               │</span>
+  <span class="gold">  │   Solana deployment                $50                │</span>
+  <span class="gold">  │   Seed pool liquidity              $3,000 - $10,000   │</span>
+  <span class="gold">  │                                   ──────────────      │</span>
+  <span class="gold">  │                                    $6,550 - $18,050   │</span>
+  <span class="gold">  └──────────────────────────────────────────────────────┘</span>
+
+  <span class="green">  NOTE: Seed pool liquidity ($3,000 - $10,000) is NOT a</span>
+  <span class="green">  cost. It is a deposit that EARNS interest and can be</span>
+  <span class="green">  withdrawn. Only ~$3,500 is actual expenses (legal + audit).</span>`,
+
+n5l:'Actual non-recoverable cost',n5v:'~$3,500',n5n:'Legal, audit, deployment, bug bounty',
+n6l:'Recoverable deposit (earns interest)',n6v:'$3,000 - $10,000',n6n:'Seed liquidity — withdraw anytime',
+
+s7l:'Transparency',s7t:'Risks — <em>Honest Assessment</em>',s7intro:'We believe in full transparency. Here are the real risks and how we mitigate each one.',
+r1t:'<strong>Smart contract bug</strong> — a flaw in the code could allow funds to be drained',r1m:'Mitigated by: professional audit + bug bounty + starting with small amounts',
+r2t:'<strong>Low demand</strong> — if nobody borrows, interest rates are near zero',r2m:'Mitigated by: targeting 10M+ Binance users in LATAM who already hold crypto',
+r3t:'<strong>SOL price crash</strong> — rapid price drop could cause cascade liquidations',r3m:'Mitigated by: conservative 75% LTV + 5% liquidation bonus incentivizes fast liquidation',
+r4t:'<strong>Regulatory change</strong> — Bolivia could reverse course on crypto',r4m:'Mitigated by: US entity (Wyoming LLC) + Bolivia trend is strongly toward adoption',
+r5t:'<strong>Oracle manipulation</strong> — fake price data could trigger wrong liquidations',r5m:'Mitigated by: Pyth Network (decentralized oracle used by all major Solana protocols)',
+hlRisk:'<strong>What is NOT a risk:</strong> Borrowers running away with money. This is impossible by design. The smart contract holds their collateral (worth 133%+ of the loan). They physically cannot withdraw the collateral without repaying first. The code enforces this — not a person, not a bank, not a promise. Code.',
+
+s8l:'Timeline',s8t:'90 Days to <em>Mainnet</em>',
+dia8:`<span class="cream">  WEEK-BY-WEEK PLAN</span>
+
+  <span class="gold">  Week 1-2</span>   Legal documents + Bolivian lawyer
+  <span class="gold">  Week 3-4</span>   US crypto lawyer + tax compliance
+  <span class="gold">  Week 5-8</span>   Build smart contracts (Anchor/Rust)
+  <span class="gold">  Week 9-10</span>  Connect front-end to test network
+  <span class="gold">  Week 11-12</span> Security audit
+  <span class="green">  Week 13</span>    <span class="green">◆ MAINNET LAUNCH — your money starts earning</span>`,
+
+s9l:'The Team',s9t:'Who Is <em>Behind This</em>',
+hlTeam:'<strong>GLDM is more than DeFi.</strong> It is a community membership that also gives access to 12 original film stories, educational content, governance voting, and the Cinematic Ideas IP pipeline. Holders get 15% better lending and borrowing rates. This community layer is what differentiates GLDM from every other lending protocol — you\'re not just earning interest, you\'re part of a creative community.',
+f1:'This document is confidential and intended for potential investors of GLDM Lending Protocol.',
+f2:'GLDM is a community membership token, not a security. No returns are guaranteed. All investments carry risk. The seed liquidity deposit earns interest but is subject to smart contract risk. Consult your own financial and legal advisors before investing.',
+f3:'Cinematic Ideas Corporation — Dearborn Ventures LLC — April 2026',
+backToApp:'← Back to main app',
+}};
+
+let L='es';
+const t=k=>I[L][k]||I.en[k]||k;
+
+function setL(l){L=l;document.getElementById('lEN').classList.toggle('active',l==='en');document.getElementById('lES').classList.toggle('active',l==='es');document.documentElement.lang=l;localStorage.setItem('gldm-inv-lang',l);render()}
+
+function render(){
+  document.getElementById('portalLabel').textContent=t('portalLabel');
+  document.getElementById('confBadge').textContent=t('confBadge');
+  document.getElementById('gateSub').textContent=t('gateSub');
+  document.getElementById('pw').placeholder=t('gatePlaceholder');
+  document.getElementById('gateBtn').textContent=t('gateBtn');
+
+  const phases=[
+    {n:1,tk:'p1t',m1:'p1m1',m2:'p1m2',sk:'p1s',bk:'p1b',done:true,now:false},
+    {n:2,tk:'p2t',m1:'p2m1',m2:'p2m2',sk:'p2s',done:false,now:true,bk:'p2b'},
+    {n:3,tk:'p3t',m1:'p3m1',m2:'p3m2',sk:'p3s',done:false,now:false,bk:'p3b'},
+    {n:4,tk:'p4t',m1:'p4m1',m2:'p4m2',sk:'p4s',done:false,now:false,bk:'p4b'},
+  ];
+
+  document.getElementById('content').innerHTML=`
+  <div class="section"><div class="sl">${t('s1l')}</div><div class="st">${t('s1t')}</div><p class="intro">${t('s1intro')}</p><div class="diagram">${t('dia1')}</div><div class="highlight">${t('hl1')}</div></div>
+
+  <div class="section"><div class="sl">${t('s2l')}</div><div class="st">${t('s2t')}</div><div class="diagram">${t('dia2')}</div><div class="highlight">${t('hl2')}</div></div>
+
+  <div class="section"><div class="sl">${t('s3l')}</div><div class="st">${t('s3t')}</div><div class="diagram">${t('dia3')}</div><div class="highlight green-hl">${t('hl3')}</div></div>
+
+  <div class="section"><div class="sl">${t('s4l')}</div><div class="st">${t('s4t')}</div><p class="intro">${t('s4intro')}</p><div class="diagram">${t('dia4')}</div>
+  <div class="num-grid">
+    <div class="num-card"><div class="num-label">${t('n1l')}</div><div class="num-val green">${t('n1v')}</div><div class="num-note">${t('n1n')}</div></div>
+    <div class="num-card"><div class="num-label">${t('n2l')}</div><div class="num-val green">${t('n2v')}</div><div class="num-note">${t('n2n')}</div></div>
+    <div class="num-card"><div class="num-label">${t('n3l')}</div><div class="num-val gold">${t('n3v')}</div><div class="num-note">${t('n3n')}</div></div>
+    <div class="num-card"><div class="num-label">${t('n4l')}</div><div class="num-val gold">${t('n4v')}</div><div class="num-note">${t('n4n')}</div></div>
+  </div><div class="highlight">${t('hl4')}</div></div>
+
+  <div class="section"><div class="sl">${t('s5l')}</div><div class="st">${t('s5t')}</div><p class="intro">${t('s5intro')}</p>
+  ${phases.map(p=>`<div class="phase"><div class="phase-header" onclick="togglePhase(this)"><div class="phase-num ${p.done?'done':''}">${p.n}</div><div class="phase-info"><div class="phase-title">${t(p.tk)}</div><div class="phase-meta"><span>${t(p.m1)}</span><span>${t(p.m2)}</span></div></div><span class="phase-status ${p.done?'done':p.now?'now':'next'}">${t(p.sk)}</span></div><div class="phase-body${p.n===1?' open':''}">${t(p.bk)}</div></div>`).join('')}
+  </div>
+
+  <div class="section"><div class="sl">${t('s6l')}</div><div class="st">${t('s6t')}</div><div class="diagram">${t('dia6')}</div>
+  <div class="num-grid">
+    <div class="num-card"><div class="num-label">${t('n5l')}</div><div class="num-val">${t('n5v')}</div><div class="num-note">${t('n5n')}</div></div>
+    <div class="num-card"><div class="num-label">${t('n6l')}</div><div class="num-val green">${t('n6v')}</div><div class="num-note">${t('n6n')}</div></div>
+  </div></div>
+
+  <div class="section"><div class="sl">${t('s7l')}</div><div class="st">${t('s7t')}</div><p class="intro">${t('s7intro')}</p>
+  <div class="risk-item"><div class="risk-dot med"></div><div class="risk-text">${t('r1t')}</div><div class="risk-mit">${t('r1m')}</div></div>
+  <div class="risk-item"><div class="risk-dot low"></div><div class="risk-text">${t('r2t')}</div><div class="risk-mit">${t('r2m')}</div></div>
+  <div class="risk-item"><div class="risk-dot low"></div><div class="risk-text">${t('r3t')}</div><div class="risk-mit">${t('r3m')}</div></div>
+  <div class="risk-item"><div class="risk-dot low"></div><div class="risk-text">${t('r4t')}</div><div class="risk-mit">${t('r4m')}</div></div>
+  <div class="risk-item"><div class="risk-dot low"></div><div class="risk-text">${t('r5t')}</div><div class="risk-mit">${t('r5m')}</div></div>
+  <div class="highlight" style="margin-top:24px">${t('hlRisk')}</div></div>
+
+  <div class="section"><div class="sl">${t('s8l')}</div><div class="st">${t('s8t')}</div><div class="diagram">${t('dia8')}</div></div>
+
+  <div class="section"><div class="sl">${t('s9l')}</div><div class="st">${t('s9t')}</div>
+  <div class="sc-row"><div class="sc-label">Founder</div><div class="sc-val">Ernesto M. Anaya — Santa Cruz de la Sierra, Bolivia / Los Angeles, CA</div></div>
+  <div class="sc-row"><div class="sc-label">Partner</div><div class="sc-val">Stephanie Del Carpio Coimbra</div></div>
+  <div class="sc-row"><div class="sc-label">US Entity</div><div class="sc-val">Dearborn Ventures LLC — Wyoming LLC</div></div>
+  <div class="sc-row"><div class="sc-label">Film</div><div class="sc-val">Cinematic Ideas Corporation — 12 original stories</div></div>
+  <div class="sc-row"><div class="sc-label">GLDM Token</div><div class="sc-val">Solana — 3kcw4yq9pAqFWEfiN5727CzdxJwra6tnywttatcxzpkm</div></div>
+  <div class="sc-row"><div class="sc-label">DexScreener</div><div class="sc-val"><a href="https://dexscreener.com/solana/3kcw4yq9paqfwefin5727czdxjwra6tnywttatcxzpkm" target="_blank">Ver token en vivo →</a></div></div>
+  <div class="highlight" style="margin-top:20px">${t('hlTeam')}</div></div>
+
+  <div style="text-align:center;margin-bottom:32px"><a href="index.html" style="color:var(--gold);font-size:.75rem;letter-spacing:.06em">${t('backToApp')}</a></div>
+
+  <div class="footer"><p>${t('f1')}</p><p>${t('f2')}</p><p style="margin-top:12px;color:var(--gold-dim)">${t('f3')}</p></div>`;
+}
+
+function checkPw(){if(document.getElementById('pw').value==='2005'){document.getElementById('gate').classList.add('hidden');document.getElementById('portal').classList.add('visible');sessionStorage.setItem('gldm-inv','1')}else{document.getElementById('pwErr').style.display='block';document.getElementById('pw').value='';document.getElementById('pw').focus()}}
+if(sessionStorage.getItem('gldm-inv')==='1'){document.getElementById('gate').classList.add('hidden');document.getElementById('portal').classList.add('visible')}
+function togglePhase(h){const b=h.nextElementSibling;const o=b.classList.contains('open');document.querySelectorAll('.phase-body').forEach(x=>x.classList.remove('open'));if(!o)b.classList.add('open')}
+
+const sv=localStorage.getItem('gldm-inv-lang');if(sv)L=sv;else if(navigator.language?.startsWith('es'))L='es';
+document.getElementById('lEN').classList.toggle('active',L==='en');document.getElementById('lES').classList.toggle('active',L==='es');
+render();
+</script>
+</body>
+</html>
