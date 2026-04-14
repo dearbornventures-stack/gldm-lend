@@ -121,6 +121,8 @@ body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xm
 .token-box a{color:var(--gold)}
 .disc{border-top:1px solid var(--border);padding:24px 0;text-align:center;margin-top:40px}
 .disc p{font-size:.58rem;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6}
+.inv-link{display:inline-block;margin-top:16px;padding:10px 28px;border:1px solid var(--gold);color:var(--gold);font-family:var(--fm);font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .2s ease}
+.inv-link:hover{background:var(--gold);color:var(--black)}
 #toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--deep);border:1px solid var(--green);padding:14px 24px;font-family:var(--fm);font-size:.75rem;color:var(--green);z-index:600}
 
 @media(max-width:768px){
@@ -213,6 +215,8 @@ about3:'GLDM token holders get 15% better rates on both sides. Plus governance v
 about4:'The protocol takes 20% of all interest as revenue. Collateral is always worth more than the loan (75% LTV max), so lenders are protected by design.',
 aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contract',aboutDex:'DexScreener',
 disc:'GLDM is a community membership token, not a security. No returns guaranteed. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+invLink:'Investor Portal',
+invDesc:'Are you an investor? Access our confidential roadmap and financial projections.',
 months:'mo',
 },es:{
 cw:'Conectar Billetera',wd:'Desconectado',wc:'Conectado',dm:'Modo demo',
@@ -262,6 +266,8 @@ about3:'Los holders de GLDM reciben 15% mejor tasa en ambos lados. Más votació
 about4:'El protocolo toma 20% de todo el interés como ingreso. El colateral siempre vale más que el préstamo (75% LTV máximo), así que los prestamistas están protegidos por diseño.',
 aboutToken:'Token',aboutChain:'Blockchain',aboutContract:'Contrato',aboutDex:'DexScreener',
 disc:'GLDM es un token de membresía comunitaria, no un valor financiero. Sin retornos garantizados. Cinematic Ideas Corporation — Dearborn Ventures LLC.',
+invLink:'Portal de Inversores',
+invDesc:'¿Sos inversor? Accedé a nuestra hoja de ruta confidencial y proyecciones financieras.',
 months:'mes',
 }};
 
@@ -330,7 +336,11 @@ function renderStart(){
         </div>
       </div>`).join('')}
     </div>
-    <div class="disc"><p>${t('disc')}</p></div>
+    <div class="disc">
+      <p>${t('disc')}</p>
+      <p style="color:var(--text);margin-top:16px;font-size:.7rem">${t('invDesc')}</p>
+      <a href="investor.html" class="inv-link">${t('invLink')} →</a>
+    </div>
   `;
 }
 
